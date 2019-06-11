@@ -1,0 +1,94 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+@font-face {
+    font-family: 'logo';
+    src: url("../fonts/logo.TTF") format('truetype');
+}
+@font-face {
+    font-family: 'kai';
+    src: url("../fonts/kaishu.ttf") format('truetype');
+}
+.clear:after{
+    content: "";
+    clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
+}
+/*导航部分结束*/
+
+.goods_list{
+    width: 946px;
+    margin: 10px auto;
+}
+
+.goods1_one{
+    float: left;
+    width: 250px;
+    margin-top: 20px;
+}
+.goods1_center{
+    float: left;
+    width: 250px;
+    margin: 0 98px;
+    margin-top: 20px;
+}
+.goods_pic{
+    width: 250px;
+
+}
+.goods_pic>a{
+    text-decoration: none;
+    width: 250px;
+}
+/*.goods_pic>img{
+     width: 250px;
+     height: 328px;
+ }*/
+.goods_price{
+    color: red;
+}
+.goods_price>span{
+    color: black;
+}
+.goods_name{
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn_list{
+    width: 946px;
+    margin: 20px auto;
+}
+
+.pre_btn,.next_btn{
+    float: left;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    margin: 0 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.pre_btn{
+    margin-left: 720px;
+}
+.pages_btn{
+    float: left;
+}
+.btn_active{
+    background-color: #4E656F;
+}
+.pages_btn>div{
+    float: left;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    margin: 0 5px;
+    border: 1px solid black;
+    cursor: pointer;
+}

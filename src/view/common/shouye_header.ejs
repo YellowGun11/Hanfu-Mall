@@ -1,0 +1,144 @@
+<style>
+    #nav{
+        height: 50px;
+        background-color: black;
+    }
+    .tuxin{
+        padding-left: 100px;
+    }
+    .denglu{
+        color: rgba(255, 255, 255, 0.96);
+        font-size: 18px;
+        margin-top: 10px;
+        background-color: black;
+        margin-top: 15px;
+        display: block !important;
+    }
+    .ic{
+        float: left;
+        font-size: 20px;
+        color: white;
+        padding-top: 10px;
+        padding-left: 30px;
+    }
+    .yuanbao{
+        font-size: 26px;
+        margin-top: 10px;
+        color: #ffffff;
+        cursor: pointer;
+        display: block !important;
+    }
+    .denglu_denglu>a:link{
+        text-decoration:none;
+        color: #ffffff;
+    }
+    .denglu>a{
+        color: #ffffff;
+        cursor: pointer;
+    }
+    @font-face {
+        font-family: 'logo';
+        src: url("../../fonts/logo.TTF") format('truetype');
+    }
+    @font-face {
+        font-family:'kai' ;
+        src: url("../../fonts/kaishu.ttf") format('truetype');
+    }
+    @font-face {
+        font-family: 'logo';
+        src: url("../../fonts/logo.TTF") format('truetype');
+    }
+    .my_information{
+        color: rgba(255, 255, 255, 0.96);
+        font-size: 18px;
+        margin-top: 10px;
+        background-color: black;
+        display: block !important;
+    }
+    #toLoginPage,#toshopping_cart{
+        text-decoration: none;
+    }
+    /*#dengluKuang{
+        margin-top: 10px;
+    }*/
+    #user_name{
+        color: white;
+        cursor: pointer;
+    }
+    #exitLogin{
+        margin:0px;
+        padding: 0px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="row" id="nav">
+        <div class="col-md-8 tuxin">
+            <div class="glyphicon glyphicon-home ic" onclick="toHome()"></div>
+            <!--<div class="iconfont icon-xiangji ic"></div>-->
+            <!--<div class="iconfont icon-bird-xiaoniao ic"></div>-->
+            <!--<div class="iconfont icon-gou ic"></div>-->
+        </div>
+        <div class="denglu_denglu col-md-4" id="dengluKuang">
+            <a class="col-md-offset-4 col-md-2" id="toshopping_cart"> <div class="yuanbao glyphicon glyphicon-shopping-cart"></div></a>
+            <div class="denglu glyphicon glyphicon-user col-md-6"><a onclick="changepge()" style="text-decoration: none"> 登录</a> </div>
+        </div>
+    </div>
+</div>
+<script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+<script>
+    window.onload=function () {
+        $.ajax({
+            type:"get",
+            url:"/getSession",
+            data:{},
+            success(data){
+                if (data!=null) {
+                    console.log(data.user_account)
+                    getLoginData(data)
+                }else {
+                    console.log("没有登录")
+                }
+
+            }
+        })
+    }
+    function toHome() {
+        $(location).attr('href', `/shopping_home`)
+    }
+    function getLoginData(data) {
+            $("#dengluKuang").html(`
+            <a href="/shopping_cart" class="col-md-offset-2 col-md-3"><div class="yuanbao glyphicon glyphicon-shopping-cart"></div></a>
+            <div class="my_information col-md-6"> <img src= ${data.user_header_url} style="width: 20px;height: 20px;border-radius:50%"><a style="text-decoration: none" href="/per_info?name=${data.user_account}" id="user_name">   ${data.user_account}</a> </div>
+            <p class="col-md-1" id="exitLogin" onclick="exitLogin()" style="line-height: 50px;color: white ;font-size: 12px;cursor:pointer">退出</p>
+        `)
+    }
+    function changepge (){
+      let mytest = window.location.href
+      console.log(mytest)
+      window.location.href=`/login.do?&url=${mytest}`;
+    }
+    $("#toshopping_cart").click(function () {
+      let newtest = window.location.href
+      console.log(newtest)
+      window.location.href=`/shopping_cart?&url=${newtest}`;
+    })
+    function exitLogin(){
+      $("#dengluKuang").html(`
+              <a class="col-md-offset-4 col-md-2" id="toshopping_cart"> <div class="yuanbao glyphicon glyphicon-shopping-cart"></div></a>
+            <div class="denglu glyphicon glyphicon-user col-md-6"><a style="text-decoration: none" onclick="changepge()"> 登录</a> </div>
+        `)
+
+      $.ajax({
+        type:"post",
+        url:"/exitLogin",
+        data:{},
+        success(data) {
+            if (data=='1'){
+                $(location).attr('href', `/shopping_home`)
+            }
+
+        }
+      })
+    }
+
+</script>

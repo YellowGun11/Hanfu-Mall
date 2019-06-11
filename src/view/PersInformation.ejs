@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <link rel="stylesheet" href="../css/persInformation.css">
+    <link rel="stylesheet" href="../css/flatpickr.min.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="fonts/font_iizwxr4cask/iconfont.css">
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <style>
+        .myClass *{
+            box-sizing:content-box;
+        }
+    </style>
+</head>
+<body >
+<%- include("common/shouye_header.ejs")%>
+<div class="userCenter myClass">
+
+    <!--左导航-->
+    <div class="userCenter_Nav ">
+        <ul class="userCenter_set">
+            <li id="user_personnal" onclick="userPersonnal()"><a href="/per_info">个人信息</a></li>
+            <li ><a href="/deli_address">收货地址</a></li>
+            <li ><a href="/order_management">订单管理</a></li>
+            <li ><a href="/safe_setting">安全设置</a></li>
+            <li ><a href="/collection_goods">收藏</a></li>
+
+        </ul>
+    </div>
+    <!--信息栏-->
+    <div class="userCenter_content">
+        <!--基本信息-->
+        <div class="userCenter_title">基本信息</div>
+        <!--头像-->
+        <div class="userCenter_hp">
+            <div class="userCenter_headPhoto">
+                <img id="per_pic" src="<%=userInfo.user_header_url%>" alt="">
+            </div>
+            <form>
+                <div class="userChoosePh">
+                    <span>选择头像</span><input id="myAjaxFile" class="userChoosePhFile" type="file" name="headPhotoFile" onchange="showPhoto(this)" accept="image/*">
+                </div>
+                <button type="button" class="userUploadBtn" onclick="ajaxFile()">上传</button>
+                <div class="clear"></div>
+            </form>
+            <div class="photoShowingDiv">
+                <div class="closePhotoShowing" onclick="closePhotoShowing()">X</div>
+                <img src="" name="photoShowing" id="photoShowing" alt="">
+            </div>
+        </div>
+        <div class="userCenter_line"></div>
+        <div class="userCenter_userInform myClass">
+            <table border="0" cellspacing="20px" cellpadding="0" width="500px" class="userInform" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tbody>
+                <tr>
+                    <td width="150px" align="right">
+                        <lable>ID：</lable>
+                    </td>
+                    <td width="200px" align="center">
+                        <input type="text" class="userNews" name="userNickname" value="<%=userInfo.member_id%>" disabled>
+                    </td>
+                    <td width="100px"></td>
+                </tr>
+                <tr>
+                    <td width="150px" align="right">
+                        <lable>昵称：</lable>
+                    </td>
+                    <td width="200px" align="center">
+                        <input type="text" id="nickname" class="userNews" name="userRealname" value="<%=userInfo.member_nickname%>">
+                    </td>
+                    <td width="100px"></td>
+                </tr>
+                <tr>
+                    <td width="150px" align="right">
+                        <lable>性别：</lable>
+                    </td>
+                    <td width="200px" align="center">
+                        <%if (userInfo.member_sex == '女'){ %>
+                            <input type="radio" name="userSex" value="男">
+                            <span>男</span>
+                            <input type="radio" name="userSex" value="女" checked>
+                            <span>女</span>
+                        <%}else{%>
+                                <input type="radio" name="userSex" value="男" checked>
+                                <span>男</span>
+                                <input type="radio" name="userSex" value="女">
+                                <span>女</span>
+                        <%}%>
+                    </td>
+                    <td width="100px"></td>
+                </tr>
+                <tr>
+                    <td width="150px" align="right">
+                        <lable>出生日期：</lable>
+                    </td>
+                    <td width="200px" align="center">
+                        <input id="att_calender" class="userNews" name="userBirthday" value="<%=times%>">
+                    </td>
+                    <td width="100px"></td>
+                </tr>
+                <tr>
+                    <td width="150px" align="right">
+                        <lable>电话：</lable>
+                    </td>
+                    <td width="200px" align="center">
+                        <input type="tel" class="userNews" name="userTel" value="<%=userInfo.member_phone%>" disabled>
+                    </td>
+                    <td width="100px"></td>
+                </tr>
+                <tr>
+                    <td width="150px" align="right">
+                        <lable>邮箱：</lable>
+                    </td>
+                    <td width="200px" align="center">
+                        <input type="email" id="user_email" class="userNews" name="userMail" value="<%=userInfo.member_email%>">
+                    </td>
+                    <td width="100px"></td>
+                </tr>
+                <tr>
+                    <td width="150px"></td>
+                    <td width="200px" align="center">
+                        <button class="userInformSave" onclick="saveChange()">保存修改</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="user_persInform_event">
+        <div class="user_persInform_dialog">
+            <span>修改保存成功！</span>
+        </div>
+    </div>
+</div>
+<%- include("common/shouye_footer.ejs")%>
+<script src="../lib/flatpickr.js"></script>
+<script src="../javascript/persInformation.js"></script>
+<script>
+    //选择头衔按钮
+    function showPhoto(p) {
+        var rd = new FileReader();//创建文件读取对象
+        var files = p.files[0];//获取file组件中的文件
+        rd.readAsDataURL(files);//文件读取装换为base64类型
+        rd.onloadend = function(e) {
+            //加载完毕之后获取结果赋值给img
+            document.getElementById("per_pic").src = this.result;
+        }
+    }
+    //头像上传
+    function ajaxFile() {
+        var formData = new FormData()
+        //第一个参数 等同于from表单的name属性
+        formData.append("myfile",$("#myAjaxFile")[0].files[0])
+        $.ajax({
+            url:"/uploadFile.do",
+            type:"POST",
+            data:formData,
+            /**
+             *必须false才会自动加上正确的Content-Type
+             */
+            contentType:false,
+            /**
+             * 必须false才会避开jQuery对 formdata 的默认处理
+             * XMLHttpRequest会对 formdata 进行正确的处理
+             */
+            processData: false,
+            success:function (data) {
+                $("#per_pic")[0].src=data
+                alert("头像修改成功！")
+            }
+        })
+    }
+
+
+    //保存修改按钮
+    function saveChange() {
+        let nickName = $("#nickname").val()
+        // console.log(nickName)
+        let sex = $("input:checked").val()
+        // console.log(sex)
+        let birth = $("#att_calender").val()
+        // console.log(birth)
+        let email = $("#user_email").val()
+        // console.log(email)
+        //正则表达式验证邮箱
+        var reg=new RegExp(/^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/)
+        console.log(reg.test(email))
+        if (nickName==""||email==""){
+            alert("昵称或者邮箱不能为空")
+        }else {
+            if (reg.test(email)) {
+                $.ajax({
+                    type:"post",
+                    url:"/perInfoUpdate.do",
+                    data:{
+                        nickName,
+                        sex,
+                        birth,
+                        email
+                    },
+                    success(data){
+                        console.log(data)
+                        if (data=='exist'){
+                            alert("修改失败!昵称或者邮箱已存在!")
+                        }else {
+                            alert("修改成功!")
+                        }
+                    }
+                })
+            }else {
+                alert("邮箱格式不对,请重新输入")
+            }
+        }
+
+    }
+</script>
+</body>
+</html>

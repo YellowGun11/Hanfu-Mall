@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>收货地址</title>
+    <link rel="stylesheet" href="../css/deliveryAddress.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="../fonts/font_iizwxr4cask/iconfont.css">
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<div class="userCenter">
+    <!--左侧导航-->
+    <p></p>
+    <div class="userCenter_Nav">
+        <ul class="userCenter_set">
+            <li><a href="/per_info">个人信息</a></li>
+            <li id="user_address"><a href="/deli_address">收货地址</a></li>
+            <li><a href="/order_management">订单管理</a></li>
+            <li ><a href="/safe_setting">安全设置</a></li>
+            <li ><a href="/collection_goods">收藏</a></li>
+
+        </ul>
+    </div>
+    <!--右侧信息栏-->
+    <div class="userCenter_content userAddress_conheight">
+        <!--收货地址管理-->
+        <div class="userCenter_title">收货地址</div>
+        <button class="userAddress_addAddress" data-toggle="modal" data-target=".myBox">新增收货地址</button>
+        <!--地址信息展示-->
+
+        <%addressList.forEach((item,index)=>{%>
+            <div class="userAddress_inform">
+                <!--地址信息-->
+                <div class="userAddress_detailInform fL">
+                    <div class="setDefault" data-default="<%=item.addr_is_default%>" onclick="setDefault(this,<%=item.addr_id%>)">设置为默认地址</div>
+                    <div class="addrPad consignee_p">收货人：<span class="consignee_item"><%=item.addr_name%></span></div>
+                    <div class="addrPad this_address">所在地区：<span class="this_address_item"><%=(item.addr_home).split("-")[0]%></span>
+                    </div>
+                    <div class="addrPad detailed_address">详细地址：<span class="detailed_address_item"><%=item.addr_home%></span></div>
+                    <div class="addrPad contact_tel">联系方式：<span class="contact_tel_item"><%=item.addr_phone%></span></div>
+                </div>
+                <!--按钮-->
+                <div class="userAddress_operateBtn fR">
+                    <%if (item.addr_is_default==1){ %>
+                        <div class="userAddress_defaultAddress fL" id="userDefAddr">默认地址</div>
+                    <%}%>
+                    <div class="userAddress_edit fL" onclick="editAddress(this,<%=item.addr_id%>)">编辑</div>
+                    <div class="userAddress_delete fL" onclick="deleteAddress(this,<%=item.addr_id%>)">删除</div>
+                </div>
+            </div>
+        <%})%>
+        <!--分页-->
+        <!--<div class="addressFenye">-->
+            <!--判断有地址信息再显示分页-->
+            <!--<div class="prevPage">< 上一页</div>-->
+            <!---->
+            <!--<div class="yeshu" onclick=""><span></span></div>-->
+            <!---->
+            <!--<div class="nextPage">下一页 ></div>-->
+        <!--</div>-->
+    </div>
+
+</div>
+<!--添加地址模态框-->
+<div class="user_addAddress_event">
+    <div class="user_addAddress_dialog">
+        <div class="user_addAddress_dialog_title">
+            <span class="fL">新增收货地址</span>
+            <span class="user_addAddress_dialog_del fR" onclick="delAddressDialog()">X</span>
+        </div>
+        <div class="user_addAddress_form">
+            <table border="0" cellspacing="20px" cellpadding="0" class="" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tr>
+                    <td align="right"><label>收货人：</label></td>
+                    <td><input id="consignee" class="userAddress_inputForm" type="text"></td>
+                </tr>
+                <tr>
+                    <td align="right"><label>所在地区：</label></td>
+                    <td>
+                        <select name="province" id="province">
+                            <option value="请选择">请选择</option>
+                        </select>
+                        <select name="city" id="city">
+                            <option value="请选择">请选择</option>
+                        </select>
+                        <select name="town" id="town">
+                            <option value="请选择">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label>详细地址：</label></td>
+                    <td><input id="address_more" class="userAddress_inputForm" type="text"></td>
+                </tr>
+                <tr>
+                    <td align="right"><label>联系方式：</label></td>
+                    <td><input id="contact_way" class="userAddress_inputForm" type="tel"></td>
+                </tr>
+                <!--<tr>
+                    <td align="right"></td>
+                    <td><input class="userDefalutAddr" type="checkbox" value="1"><span>设为默认地址</span></td>
+                </tr>-->
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btnCancel" onclick="delAddressDialog()">取消</button>
+                        <button type="button" class="btnSave" onclick="saveAddUserAddr()">保存</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!--编辑地址-->
+<div class="user_editAddress_event">
+    <div class="user_editAddress_dialog">
+        <div class="user_addAddress_dialog_title">
+            <span class="fL">编辑收货地址</span>
+            <span class="user_addAddress_dialog_del fR" onclick="delEditAddressDialog()">X</span>
+        </div>
+        <div class="user_editAddress_form">
+            <table border="0" cellspacing="20px" cellpadding="0" class="" style="border-collapse:separate; border-spacing:0px 10px;">
+                <tr>
+                    <td align="right"><label>收货人：</label></td>
+                    <td><input id="consignee_edit"  class="userAddress_inputForm" type="text"></td>
+                </tr>
+                <tr>
+                    <td align="right"><label>所在地区：</label></td>
+                    <td>
+                        <select name="province" id="province_edit">
+                            <option value="请选择">请选择</option>
+                        </select>
+                        <select name="city" id="city_edit">
+                            <option value="请选择">请选择</option>
+                        </select>
+                        <select name="town" id="town_edit">
+                            <option value="请选择">请选择</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label>详细地址：</label></td>
+                    <td><input id="address_edit" class="userAddress_inputForm" type="text"></td>
+                </tr>
+                <tr>
+                    <td align="right"><label>联系方式：</label></td>
+                    <td><input id="tel_edit" class="userAddress_inputForm" type="tel"></td>
+                </tr>
+                <!--<tr>
+                    <td align="right"></td>
+                    <td><input class="userDefalutAddr" type="checkbox"><span>设为默认地址</span></td>
+                </tr>-->
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btnCancel" onclick="delEditAddressDialog()">取消</button>
+                        <button type="button" class="btnEditSave" onclick="saveEditUserAddress()">保存</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!--删除收货地址-->
+<div class="user_deleteAddress_event">
+    <div class="user_deleteAddress_dialog">
+        <div class="user_addAddress_dialog_title">
+            <span class="fL">删除收货地址</span>
+            <span class="user_addAddress_dialog_del fR" onclick="delDeleteAddressDialog()">X</span>
+        </div>
+        <div class="user_deleteAddress_form">
+            <table border="0" cellspacing="20px" cellpadding="0" class="" style="border-collapse:separate; border-spacing:0px 20px;">
+                <tr>
+                    <td><label>确定要删除所选收货地址吗？</label></td>
+                </tr>
+                <tr>
+                    <td>
+                        <button type="button" class="btnCancel" onclick="delDeleteAddressDialog()">取消</button>
+                        <button type="submit" class="btnEditConfirm" onclick="determineDelAddress()">确定</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+<!--背景蒙蔽遮挡-->
+<div class="addAddress_bg_cover"></div>
+<%- include("common/shouye_footer.ejs")%>
+<script src="../lib/jquery-1.11.3.js"></script>
+<script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+<script src="../javascript/area.js"></script>
+<script src="../javascript/select.js"></script>
+<script>
+    //新增收货地址按钮
+    $(".userAddress_addAddress").click(function () {
+        if ($(".userAddress_inform").length==4){
+            alert("收货地址数量已达到最大，不能再增加地址！")
+        }else {
+            $(".user_addAddress_event").fadeIn("fast");
+            $(".addAddress_bg_cover").fadeIn("fast")
+        }
+
+    })
+    //关闭新增收货地址窗口
+    function delAddressDialog(){
+        $(".user_addAddress_event").fadeOut("fast");
+        $(".addAddress_bg_cover").fadeOut("fast")
+    }
+
+    //保存新增收货地址
+    function saveAddUserAddr(){
+        let consignee = $("#consignee").val()
+        let province =$("#province option:selected").val()
+        let city=$("#city option:selected").val()
+        let town = $("#town option:selected").val()
+        let areaTwo = $("#address_more").val()
+        let TEL_REGEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+        let contactWay = $("#contact_way").val()
+        /*let defaultAddress = $(".userDefalutAddr:checked").val()
+        if (defaultAddress==1){
+            defaultAddress=1
+        } else {
+            defaultAddress=0
+        }*/
+        if (consignee==""||areaTwo==""||contactWay==""||province=="请选择"||city=="请选择"||town=="请选择"){
+            alert("不能为空，请输入！")
+        }else {
+            let areaOne=province+city+town
+            let address=areaOne+"-"+areaTwo
+            if(TEL_REGEXP.test(contactWay)){
+                $.ajax({
+                    type:"post",
+                    url:"/addAddress.do",
+                    data:{
+                        consignee,
+                        address,
+                        contactWay
+                    },
+                    success(data){
+                        console.log(data)
+                        if (data.status=='1'){
+                            alert("增加地址成功")
+                            $(".user_addAddress_event").fadeOut("fast");
+                            $(".addAddress_bg_cover").fadeOut("fast")
+                            $(location).attr('href', `/deli_address`)
+                        }else {
+                            alert("增加地址失败!")
+                        }
+                    }
+                })
+            }else {
+                alert("您输入的手机号有问题，请重新输入！")
+            }
+        }
+
+    }
+
+
+    //编辑地址按钮
+    var address_id;
+    var _edit;
+    function editAddress(one,this_id){
+        $(".user_editAddress_event").fadeIn("fast");
+        $(".addAddress_bg_cover").fadeIn("fast")
+        let consignee = $(one).parent().siblings(".userAddress_detailInform").children(".consignee_p").children(".consignee_item").text()
+        // console.log(consignee)
+        $("#consignee_edit").val(`${consignee}`)
+        let address = $(one).parent().siblings(".userAddress_detailInform").children(".detailed_address").children(".detailed_address_item").text().split("-")[1]
+        $("#address_edit").val(`${address}`)
+        let tel = $(one).parent().siblings(".userAddress_detailInform").children(".contact_tel").children(".contact_tel_item").text()
+        $("#tel_edit").val(`${tel}`)
+        address_id=this_id
+        _edit=one
+    }
+    /*$(".userAddress_conheight").on("click",".userAddress_edit",function () {
+        $(".user_editAddress_event").fadeIn("fast");
+        $(".addAddress_bg_cover").fadeIn("fast")
+        let consignee = $(this).parent().siblings(".userAddress_detailInform").children(".consignee_p").children(".consignee_item").text()
+        // console.log(consignee)
+        $("#consignee_edit").val(`${consignee}`)
+        let address = $(this).parent().siblings(".userAddress_detailInform").children(".detailed_address").children(".detailed_address_item").text()
+        $("#address_edit").val(`${address}`)
+        let tel = $(this).parent().siblings(".userAddress_detailInform").children(".contact_tel").children(".contact_tel_item").text()
+        $("#tel_edit").val(`${tel}`)
+    })*/
+    //关闭编辑地址窗口
+    function delEditAddressDialog() {
+        $(".user_editAddress_event").fadeOut("fast");
+        $(".addAddress_bg_cover").fadeOut("fast")
+    }
+    //保存编辑地址窗口
+    function saveEditUserAddress() {
+        let consignee = $("#consignee_edit").val()
+        let province =$("#province_edit option:selected").val()
+        let city=$("#city_edit option:selected").val()
+        let town = $("#town_edit option:selected").val()
+        let areaTwo = $("#address_edit").val()
+        let TEL_REGEXP = /^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/;
+        let contactWay = $("#tel_edit").val()
+        /*let defaultAddress = $(".userDefalutAddr:checked").val()
+        if (defaultAddress==1){
+            defaultAddress=1
+        } else {
+            defaultAddress=0
+        }*/
+        if (consignee==""||areaTwo==""||contactWay==""||province=="请选择"||city=="请选择"||town=="请选择"){
+            alert("不能为空，请输入！")
+        }else {
+            let areaOne=province+city+town
+            let address=areaOne+"-"+areaTwo
+            if(TEL_REGEXP.test(contactWay)){
+                $.ajax({
+                    type:"post",
+                    url:"/updateAddress.do",
+                    data:{
+                        address_id,
+                        consignee,
+                        address,
+                        contactWay
+                    },
+                    success(data){
+                        // console.log(data)
+                        if (data=='1'){
+                            alert("地址编辑成功")
+                            $(_edit).parent().siblings(".userAddress_detailInform").children(".consignee_p").children(".consignee_item").text(`${consignee}`)
+                            $(_edit).parent().siblings(".userAddress_detailInform").children(".this_address").children(".this_address_item").text(`${areaOne}`)
+                            $(_edit).parent().siblings(".userAddress_detailInform").children(".detailed_address").children(".detailed_address_item").text(`${address}`)
+                            $(_edit).parent().siblings(".userAddress_detailInform").children(".contact_tel").children(".contact_tel_item").text(`${contactWay}`)
+                            $(".user_editAddress_event").fadeOut("fast");
+                            $(".addAddress_bg_cover").fadeOut("fast")
+                        }else {
+                            alert("地址编辑失败!")
+                        }
+                    }
+                })
+            }else {
+                alert("您输入的手机号有问题，请重新输入！")
+            }
+        }
+    }
+
+    //删除地址按钮
+    function deleteAddress(one,this_id) {
+        $(".user_deleteAddress_event").fadeIn("fast");
+        $(".addAddress_bg_cover").fadeIn("fast")
+        address_id=this_id
+
+    }
+    //设置默认地址按钮
+    function setDefault(one,this_id) {
+        let is_default=$(one).attr("data-default")
+        if (is_default==1){
+            alert("该地址已为默认地址！")
+        } else {
+            let addr_id=this_id
+            $.ajax({
+                type:"post",
+                url:"/setDefaultAddress.do",
+                data:{
+                    addr_id,
+                },
+                success(data){
+                    // console.log(data)
+                    if (data=='1'){
+                        alert("设置成功！")
+                        $(location).attr('href', `/deli_address`)
+                    }else {
+                        alert("设置失败!")
+                    }
+                }
+            })
+        }
+    }
+    //关闭删除窗口
+    function delDeleteAddressDialog() {
+        $(".user_deleteAddress_event").fadeOut("fast");
+        $(".addAddress_bg_cover").fadeOut("fast")
+    }
+    //删除确定按钮
+    function determineDelAddress() {
+        $.ajax({
+            type:"post",
+            url:"/deleteAddress.do",
+            data:{
+                address_id,
+            },
+            success(data){
+                // console.log(data)
+                if (data=='1'){
+                    alert("删除成功！")
+                    $(location).attr('href', `/deli_address`)
+                }else {
+                    alert("删除失败!")
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

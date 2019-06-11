@@ -1,0 +1,273 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.fL{
+    float: left;
+}
+.fR{
+    float: right;
+}
+.userCenter{
+    width: 1090px;
+    height: 800px;
+    /*height: 1500px;*/
+    margin: 0 auto;
+    padding: 0 25px;
+    position: relative;
+}
+/*左侧导航*/
+.userCenter_Nav{
+    margin-top: 50px;
+    position: absolute;
+    box-shadow: 5px 5px 5px 5px rgba(65, 60, 99, 0.41);
+}
+.userCenter_set{
+    padding: 0;
+    margin: 0;
+}
+.userCenter_set>li{
+    padding: 10px 20px;
+    font-size: 16px;
+    list-style: none;
+    cursor: pointer;
+    color: #484848;
+}
+.userCenter_set>li>a{
+    text-decoration: none;
+    color: #484848;
+}
+.userCenter_set>li>a:hover{
+    color: #FAAF3B;
+}
+#user_address{
+    color: #fab335;
+}
+
+/*右侧信息栏*/
+.userCenter_content{
+    width: 850px;
+    height: 700px;
+    /*height: 1400px;*/
+    padding-left: 50px;
+    position: absolute;
+    right: 25px;
+    margin-top: 50px;
+    box-shadow: 2px 2px 10px 2px rgba(99, 21, 24, 0.41);
+}
+
+/*小标题*/
+.userCenter_title {
+    color: #484848;
+    font-size: 16px;
+    margin: 24px 0;
+}
+/*地址信息*/
+.userAddress_inform{
+    position: relative;
+    width: 718px;
+    height: 116px;
+    border: 1px solid gainsboro;
+    padding: 0 40px;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+.userAddress_detailInform{
+
+}
+.setDefault{
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    display: none;
+}
+.userAddress_inform:hover .setDefault{
+    display: block;
+}
+.topMar{
+    margin-top: 48px;
+}
+.addrPad{
+    padding: 5px 0;
+}
+.userAddress_operateBtn{
+    padding-top: 87px;
+}
+/*默认地址*/
+.userAddress_defaultAddress{
+    color: #D9B291;
+    padding: 5px 12px;
+}
+.userAddress_edit{
+    padding: 5px 12px;
+    cursor: pointer;
+}
+.userAddress_delete{
+    padding: 5px 12px;
+    cursor: pointer;
+}
+.userAddress_addAddress{
+    border: 0;
+    background: #68201b;
+    padding: 10px 36px;
+    border-radius: 2px;
+    color: #eeeeee;
+    margin-bottom: 24px;
+}
+
+/*新增地址模态框*/
+select{
+    padding:5px 0;
+}
+.user_addAddress_event{
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    margin-left: -300px;
+    z-index: 666;
+    display: none;
+}
+.user_addAddress_dialog{
+    width: 600px;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    padding: 0 12px;
+}
+.user_addAddress_dialog_title{
+    width: auto;
+    height: 50px;
+    line-height: 50px;
+    color: #847d84;
+}
+.user_addAddress_dialog_del{
+    cursor: pointer;
+}
+.user_addAddress_form{
+    color: #484848;
+    padding: 0 50px;
+}
+.user_addAddress_form>table{
+    margin: 0 auto;
+}
+.btnCancel{
+    border: 0;
+    background: #c6bfc6;
+    padding: 10px 36px;
+    border-radius: 2px;
+    color: #eeeeee;
+    cursor: pointer;
+}
+.btnSave{
+    border: 0;
+    background: #684029;
+    padding: 10px 36px;
+    border-radius: 2px;
+    color: #eeeeee;
+    cursor: pointer;
+}
+.userAddress_inputForm{
+    width: 280px;
+    height: 30px;
+    border: 1px solid #dfdfdf;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+.userDefalutAddr{
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+
+/*背景遮挡*/
+.addAddress_bg_cover{
+    width: 100%;
+    height: 800px;
+    background-color: rgba(69, 62, 69, 0.25) !important;
+    position: absolute !important;
+    top: 0;
+    z-index: 66;
+    display: none;
+}
+
+/*编辑地址模态框*/
+.user_editAddress_event{
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    margin-left: -300px;
+    z-index: 666;
+    display: none;
+}
+.user_editAddress_dialog{
+    width: 600px;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    padding: 0 12px;
+}
+.btnEditSave{
+    border: 0;
+    background: #683629;
+    padding: 10px 36px;
+    border-radius: 2px;
+    color: #eeeeee;
+    cursor: pointer;
+}
+.user_editAddress_form{
+    color: #484848;
+    padding: 0 50px;
+}
+.user_editAddress_form>table{
+    margin: 0 auto;
+}
+/*删除地址模态框*/
+.user_deleteAddress_event{
+    position: absolute;
+    top: 13%;
+    left: 50%;
+    margin-left: -250px;
+    z-index: 666;
+    display: none;
+}
+.user_deleteAddress_dialog{
+    width: 500px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 5px;
+    padding: 0 12px;
+}
+.btnEditConfirm{
+    border: 0;
+    background: #684029;
+    padding: 10px 36px;
+    border-radius: 2px;
+    color: #eeeeee;
+    cursor: pointer;
+}
+.user_deleteAddress_form{
+    color: #484848;
+    padding: 0 50px;
+}
+/*更多地址的按钮*/
+.moreAddress{
+    float: right;
+    padding: 3px 10px;
+}
+
+
+/*!*分页*!*/
+ .addressFenye>div{
+     cursor: pointer;
+     display: inline-block;
+     padding: 7px 12px;
+     border: 1px solid #E8E8E8;
+ }
+.addressFenye{
+    position: absolute;
+    right: 50px;
+    bottom: 12px;
+}

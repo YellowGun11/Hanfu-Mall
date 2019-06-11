@@ -1,0 +1,121 @@
+ul{
+    margin: 0;
+    padding: 0;
+}
+li{
+    margin: 0;
+    padding: 0;
+}
+
+#page-inner{
+    margin: 10px auto;
+    width: 946px;
+}
+#myTab li{
+    width:25%;
+    float:left;
+    height:40px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#myTab li img{
+    float:left;
+    height: 40px;
+}
+
+#myTab li a{
+    color:white;
+    text-decoration: none;
+    text-align: center;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+
+.blue{
+    background:#0f9af2;
+}
+.gray{
+    background: #dfdfdf;
+}
+.tabPaneUl{
+    width: 700px;
+    margin: 0 auto;
+    list-style: none;
+}
+
+.tabPaneUl li{
+    height: 40px;
+    line-height: 40px;
+}
+.tab-pane{
+    margin-top: 50px;
+}
+/*步骤条部分结束*/
+.goods_pic,.goods_name,.goods_size{
+    float: left;
+}
+.goods_name{
+    margin-left: 5px;
+    float: left;
+    font-size: 12px;
+    width: 200px;
+}
+.goods_size{
+    float: left;
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+/*配送信息*/
+.order_message{
+    border: 1px solid red;
+    padding: 10px;
+}
+.real_pay{
+    text-align: left;
+    font-weight: bold;
+}
+.real_pay>span{
+    font-size: 18px;
+    font-weight: normal;
+}
+.real_pay>span:last-child{
+    color: red;
+}
+.consignee,.shipping_address{
+    text-align: left;
+    font-weight: bold;
+}
+.consignee>span,.shipping_address>span{
+    font-weight: normal;
+}
+.order_submit{
+    float: right;
+    background-color: red;
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    color: white;
+    cursor: pointer;
+}
+
+.order_money{
+    color: red;
+}
+.erwei_ma{
+    width: 100%;
+    text-align: center;
+}
+.submit_pay{
+    width: 70px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    background-color: #0F9AF2;
+    border-radius: 3px;
+    color: white;
+}

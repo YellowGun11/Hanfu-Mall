@@ -1,0 +1,174 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    position: absolute;
+}
+@font-face {
+    font-family: 'logo';
+    src: url("../fonts/logo.TTF") format('truetype');
+}
+@font-face {
+    font-family: 'kai';
+    src: url("../fonts/kaishu.ttf") format('truetype');
+}
+.clear:after{
+    content: "";
+    clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
+}
+header{
+    position: relative;
+    background-color: #4E656F;
+    height: 70px;
+    max-width: 1349px;
+    min-width: 1000px;
+    color: white;
+    overflow: hidden;
+}
+.logo-text{
+    float: left;
+    font-family: logo;
+    font-size: 50px;
+    /*font-weight: normal;*/
+    margin-left: 70px;
+    margin-top: 0;
+    height: 70px;
+    line-height: 70px;
+}
+.shopping{
+    font-family: 方正准圆_GBK;
+    float: left;
+    margin-top: 37px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.header_text{
+    font-family: kai;
+    float: left;
+    margin-left: 100px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 32px;
+
+}
+.header_search{
+    float: right;
+    margin-right: 70px;
+    margin-top: 20px;
+    width: 335px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.21);
+    border-radius: 17px;
+    border: none;
+    outline: none;
+    padding-left: 15px;
+    color: white;
+}
+.search_icon{
+    right: 81px;
+    top: 22px;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+.search_icon>img{
+    width: 25px;
+    height: 25px;
+}
+input::-webkit-input-placeholder {
+    color:    black;
+}
+input:-moz-placeholder {
+    color:    black;
+}
+input::-moz-placeholder {
+    color:    black;
+}
+input:-ms-input-placeholder {
+    color:    black;
+}
+/*导航部分结束*/
+.content{
+    margin: 10px auto;
+    width: 946px;
+}
+.goods_pic{
+    float: left;
+}
+.goods_pic>img{
+    width: 42px;
+}
+.goods_name{
+    margin-left: 5px;
+    float: left;
+    font-size: 12px;
+    width: 200px;
+}
+.goods_size{
+    float: left;
+    margin-left: 5px;
+    font-size: 12px;
+}
+.number_sub{
+    float: left;
+    cursor: pointer;
+}
+.number_value{
+    display: block;
+    width: 35px;
+    margin: 0 5px;
+    float: left;
+}
+.number_add{
+    float: left;
+    cursor: pointer;
+}
+/*购物车内容部分结束*/
+
+.cart_ope{
+    margin: 20px auto;
+    width: 100%;
+    height: 50px;
+    background-color: #b8b6b7;
+}
+.ope_check_all,.ope_delete,.ope_move,.ope_selected,.ope_total{
+    float: left;
+    line-height: 50px;
+    margin: 0 10px;
+}
+.ope_check_all,.ope_delete,.ope_move{
+    cursor: pointer;
+}
+.ope_selected{
+    margin-left: 400px;
+}
+.ope_selected>span{
+    color: red;
+    font-size: 20px;
+}
+.ope_total{
+
+}
+.ope_total>span:last-child{
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.ope_done{
+    float: right;
+    cursor: pointer;
+    width: 60px;
+    height: 50px;
+    line-height: 50px;
+    background-color: red;
+    text-align: center;
+    color: white;
+}
+

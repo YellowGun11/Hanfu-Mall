@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品收藏</title>
+    <link rel="stylesheet" href="../css/deliveryAddress.css">
+    <link rel="stylesheet" type="text/css" href="../lib/bootstrap-3.3.5-dist/css/bootstrap.css">
+</head>
+<style>
+    .table tbody tr td{
+        vertical-align: middle;
+    }
+</style>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<div class="userCenter">
+    <!--左侧导航-->
+    <p></p>
+    <div class="userCenter_Nav">
+        <ul class="userCenter_set">
+            <li><a href="/per_info">个人信息</a></li>
+            <li id="user_address"><a href="/deli_address">收货地址</a></li>
+            <li><a href="/order_management">订单管理</a></li>
+            <li ><a href="/safe_setting">安全设置</a></li>
+            <li ><a href="/collection_goods">收藏</a></li>
+        </ul>
+    </div>
+    <!--右侧信息栏-->
+    <div class="userCenter_content userAddress_conheight">
+        <!--收货地址管理-->
+        <div class="userCenter_title">收藏商品</div>
+        <!--地址信息展示-->
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>商品名字</th>
+                    <th>商品信息</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <%collectionData.forEach(function (item,index) {%>
+                  <tr>
+                      <td >
+                          <a href="/goods_detail?id=<%=item.goods_id%>"><%= item.goods_name%></a>
+                      </td>
+                      <td >
+                          <a href="/goods_detail?id=<%=item.goods_id%>"><img src="<%= item.goods_picture_main_url%>" style="width: 150px" alt=""></a>
+                      </td>
+                      <td>
+                          <p class="btn btn-danger" data-goodsId="<%=item.goods_id%>" onclick="deletaCollection(this)">删除</p>
+                          <p style="display: none"><%=item.collection_goods_id%></p>
+                      </td>
+                  </tr>
+                <%})%>
+            </tbody>
+        </table>
+
+        <!--分页-->
+        <!--<div class="addressFenye">-->
+        <!--判断有地址信息再显示分页-->
+        <!--<div class="prevPage">< 上一页</div>-->
+        <!---->
+        <!--<div class="yeshu" onclick=""><span></span></div>-->
+        <!---->
+        <!--<div class="nextPage">下一页 ></div>-->
+        <!--</div>-->
+    </div>
+
+</div>
+<%- include("common/shouye_footer.ejs")%>
+<script src="../javascript/area.js"></script>
+<script src="../javascript/select.js"></script>
+<script>
+function deletaCollection(item) {
+  let id = $(item).next().text()
+  let goodsId=$(item).attr("data-goodsId")
+  console.log(id)
+  console.log($(item))
+  $.ajax({
+    type:"post",
+    url:"/deleteCollection.do",
+    data:{id,goodsId},
+    success(data){
+      console.log(Number(data))
+      if (Number(data)){
+        $(item).parent().parent().remove()
+      }
+    }
+  })
+}
+</script>
+</body>
+</html>

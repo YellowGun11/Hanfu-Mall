@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车界面</title>
+    <link rel="stylesheet" href="../css/shoppingCart.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="fonts/font_iizwxr4cask/iconfont.css">
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<header class="clear">
+    <h1 class="logo-text">采薇</h1>
+    <p class="shopping">购物车</p>
+    <p class="header_text">岂曰无衣,与子同袍</p>
+    <input type="text" class="header_search" placeholder="输入汉服的关键字或类型" onkeypress="if(event.keyCode==13) {searchGoods();return false;}"  maxlength="20" onkeyup="checkLength(this, 30);">
+    <div class="search_icon" onclick="searchGoods()">
+        <img src="../../images/search_icon.png" alt="">
+    </div>
+</header>
+<div class="content">
+    <table class="table table-condensed">
+        <caption>您的购物车</caption>
+        <thead>
+        <tr>
+            <th>
+                <input type="checkbox" id="checkAll1">全选
+            </th>
+            <th>商品信息</th>
+            <th>单价</th>
+            <th>数量</th>
+            <th>金额</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%goodsList.forEach((item,index)=>{%>
+            <tr>
+                <td class="goods_select">
+                    <input type="checkbox" name="goods" class="goods_choose" onclick="checkOne()" data_id="<%=item.shopping_cart_id%>" data_goods_id="<%=item.goods_id%>">
+                </td>
+                <td class="clear goods_info">
+                    <div class="goods_pic">
+                        <img name src="<%=item.goods_picture_main_url %>" alt="">
+                    </div>
+                    <p class="goods_name"><%=item.goods_name%></p>
+                    <p class="goods_size">尺码:<span><%=item.goods_size%></span></p>
+                </td>
+                <td class="goods_price">￥<span class="goods_price_item"><%=item.shopping_price%></span></td>
+                <td class="goods_number clear">
+                    <div class="number_sub" data_size="<%=item.goods_size%>" data_goods_id="<%=item.goods_id%>" data_id="<%=item.shopping_cart_id%>"><i class="glyphicon glyphicon-minus"></i></div>
+                    <input class="number_value" type="number" value="<%=item.goods_number %>" min="1" max="5" readonly="readonly">
+                    <div class="number_add" data_size="<%=item.goods_size%>" data_goods_id="<%=item.goods_id%>" data_id="<%=item.shopping_cart_id%>"><i class="glyphicon glyphicon-plus"></i></div>
+                </td>
+                <td class="goods_total">￥<span class="goods_total_item"><%= item.shopping_price*parseInt(item.goods_number)%></span></td>
+                <td>
+                    <button title="移入收藏夹" class="btn btn-success btn-xs btn_move" data-toggle="modal" data-target=".myBox"><i class="glyphicon glyphicon-star-empty"></i></button>
+                    <button title="删除" class="btn btn-danger btn-xs btn_delete" data-toggle="modal" data-target=".myBox"><i class="glyphicon glyphicon-remove"></i></button>
+                </td>
+            </tr>
+        <%})%>
+        </tbody>
+    </table>
+    <div class="cart_ope clear">
+        <div class="ope_check_all">
+            <input type="checkbox" id="checkAll2">全选
+        </div>
+        <div class="ope_delete" onclick="deleteAllGoods()">删除</div>
+        <!--<div class="ope_move" onclick="collectAllGoods()">移入收藏夹</div>-->
+        <div class="ope_selected">已选商品<span class="ope_selected_number">0</span>件</div>
+        <div class="ope_total">合计(不含运费):<span>￥</span><span class="ope_total_item">0.00</span></div>
+        <div class="ope_done" onclick="settleAccounts()">结算</div>
+    </div>
+    <div class="modal fade myBox" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include("common/shouye_footer.ejs")%>
+<script src="../lib/jquery-1.11.3.js"></script>
+<script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.js"></script>
+<script>
+    // 限制中英文皆可输入的文本框长度
+    var checkLength = function(dom, maxLength){
+        var l = 0;
+        for(var i=0; i<dom.value.length; i++) {
+            /*/[\u4e00-\u9fa5]/ 为匹配汉字的正则。*/
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l+=2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0,i);
+                break;
+            }
+        }
+    };
+    function searchGoods() {
+        let search_goods = $(".header_search").val()
+        console.log(search_goods)
+        $(location).attr('href', `/search_page?name=${search_goods}`)
+    }
+
+    //数量加减
+    $(".number_sub").click(function () {
+        let va= parseInt($(this).next().val())-1
+        let flag=true
+        if (va<1){
+            va=1
+            flag=false
+        }
+        $(this).next().val(`${va}`)
+        let item = Number($(this).next().val())*Number($(this).parent().prev().children(".goods_price_item").text())
+        $(this).parent().next().children(".goods_total_item").text(`${item.toFixed(2)}`)
+        let newNum = $(this).next().val()
+        let cart_goods_id=$(this).attr("data_id")
+        let goods_id=$(this).attr("data_goods_id")
+        let goods_size=$(this).attr("data_size")
+        selectedGoods()
+        $.ajax({
+            type:"post",
+            url:"/subCartGoodsNum.do",
+            data:{
+                cart_goods_id,
+                goods_id,
+                goods_size,
+                flag
+            },
+            success(data){
+                if (data=='2'){
+                    alert("库存不足，操作失败！")
+                }
+            }
+        })
+    })
+    $(".number_add").click(function () {
+        let va= parseInt($(this).prev().val())+1
+        let flag=true
+        if(va>5){
+            va=5;
+            flag=false
+        }
+        $(this).prev().val(`${va}`)
+        let item = Number($(this).prev().val())*Number($(this).parent().prev().children(".goods_price_item").text())
+        $(this).parent().next().children(".goods_total_item").text(`${item.toFixed(2)}`)
+        let newNum = $(this).prev().val()
+        let cart_goods_id=$(this).attr("data_id")
+        let goods_id=$(this).attr("data_goods_id")
+        let goods_size=$(this).attr("data_size")
+        selectedGoods()
+        $.ajax({
+            type:"post",
+            url:"/addCartGoodsNum.do",
+            data:{
+                cart_goods_id,
+                goods_id,
+                goods_size,
+                flag
+            },
+            success(data){
+                if (data=='2'){
+                    alert("库存不足，操作失败！")
+                }
+            }
+        })
+    })
+
+
+    //全选按钮
+    $('#checkAll1').click(function(){
+        if(this.checked) {
+            $("input[type=checkbox][name=goods]").each(function(){
+                $(this).prop('checked', 'true');
+            });
+            $('#checkAll2').prop('checked', 'true')
+            selectedGoods()
+            let is_select=1
+            $.ajax({
+                type:"post",
+                url:"/updateAllCartGoods.do",
+                data:{
+                    is_select
+                },
+                success(data){
+                    if (data=='1'){
+
+                    }
+                    else if(data=='2') {
+                        alert("请先登录！")
+                    }
+                    else {
+
+                    }
+                }
+            })
+        } else {
+            $("input[type=checkbox][name=goods]").each(function(){
+                $(this).removeAttr('checked');
+            });
+            $('#checkAll2').removeAttr('checked');
+            selectedGoods()
+            let is_select=0
+            $.ajax({
+                type:"post",
+                url:"/updateAllCartGoods.do",
+                data:{
+                    is_select
+                },
+                success(data){
+                    if (data=='1'){
+
+                    }else {
+
+                    }
+                }
+            })
+        }
+    });
+    $('#checkAll2').click(function(){
+        if(this.checked) {
+            $("input[type=checkbox][name=goods]").each(function(){
+                $(this).prop('checked', 'true');
+            });
+            $('#checkAll1').prop('checked', 'true')
+            selectedGoods()
+            let is_select=1
+            $.ajax({
+                type:"post",
+                url:"/updateAllCartGoods.do",
+                data:{
+                    is_select
+                },
+                success(data){
+                    if (data=='1'){
+
+                    }else {
+
+                    }
+                }
+            })
+        } else {
+            $("input[type=checkbox][name=goods]").each(function(){
+                $(this).removeAttr('checked');
+            });
+            $('#checkAll1').removeAttr('checked');
+            selectedGoods()
+            let is_select=0
+            $.ajax({
+                type:"post",
+                url:"/updateAllCartGoods.do",
+                data:{
+                    is_select
+                },
+                success(data){
+                    if (data=='1'){
+
+                    }else {
+
+                    }
+                }
+            })
+        }
+    });
+
+    function checkOne(){
+        let count = 0;
+        $("input[type=checkbox][name=goods]").each(function(){
+            if($(this).attr('checked') != 'checked'){// 判断一组复选框是否有未选中的
+                count+=1;
+            }
+        });
+        if(count == 0) { // 如果没有未选中的那么全选框被选中
+            $('#checkAll1').attr('checked', 'true');
+            $('#checkAll2').attr('checked', 'true');
+        } else {
+            $('#checkAll1').removeAttr('checked');
+            $('#checkAll2').removeAttr('checked');
+        }
+        selectedGoods()
+    }
+    //已选商品数量
+    function selectedGoods() {
+        let count=0;
+        let total=0;
+        $("input[type=checkbox][name=goods]").each(function(){
+            var isChecked = $(this).prop('checked')
+            if(isChecked){// 判断一组复选框是否有未选中的
+                let one = Number($(this).parent().siblings(".goods_number").children(".number_value").val())
+                count += one
+                let two = Number($(this).parent().siblings(".goods_total").children(".goods_total_item").text())
+                total += two
+            }
+        });
+        // console.log(count)
+        $('.ope_selected_number').text(`${count}`)
+        $('.ope_total_item').text(`${total}`)
+    }
+
+    //删除按钮点击事件
+    $("tbody").on("click",".btn_delete",function () {
+        $(".myBox").html("");
+        $(".myBox").html(`<div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">警告！</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认从购物车中删除该商品吗？</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary delete_true" data-dismiss="modal">确认</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+
+            </div>
+            </div>`);
+        // let goods_delete = $(this).parent().siblings(".goods_info").children(".goods_name").text()
+        let goods_cart_id = $(this).parent().siblings(".goods_select").children(".goods_choose").attr("data_id")
+        let goods_id = $(this).parent().siblings(".goods_select").children(".goods_choose").attr("data_goods_id")
+        let _this = $(this)
+        $(".delete_true").click(function () {
+            $.ajax({
+                type:"post",
+                url:"/deleteCartGoods.do",
+                data:{
+                    goods_cart_id,
+                    goods_id
+                },
+                success(data){
+                    if (data=='1'){
+                        alert("删除成功!")
+                        _this.parent().parent().remove()
+                        selectedGoods()
+                    }else {
+                        alert("删除失败!")
+                    }
+                }
+            })
+        })
+
+    })
+
+    //删除所有商品
+    function deleteAllGoods(){
+        let isChecked = $("#checkAll2").prop('checked')
+        if (isChecked){
+            // console.log("全部删除")
+            let user_id =1
+            $.ajax({
+                type:"post",
+                url:"/deleteCartAllGoods.do",
+                data:{
+                    user_id
+                },
+                success(data){
+                    if (data=='1'){
+                        alert("删除成功!")
+                        $('tbody').children().remove()
+                        selectedGoods()
+                    }
+                    else if(data=='2') {
+                        alert("请先登录！")
+                    }
+                    else {
+                        alert("删除失败!")
+                    }
+                }
+            })
+        }
+    }
+
+    //收藏按钮点击事件
+    $("tbody").on("click",".btn_move",function () {
+        $(".myBox").html("");
+        $(".myBox").html(`<div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">警告！</h4>
+            </div>
+            <div class="modal-body">
+                <p>确认将该商品移入收藏夹吗？</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-primary move_true" data-dismiss="modal">确认</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+            </div>
+
+            </div>
+            </div>`);
+        let goods_move = $(this).parent().siblings(".goods_info").children(".goods_name").text()
+        let goods_cart_id = $(this).parent().siblings(".goods_select").children(".goods_choose").attr("data_id")
+        let goods_id = $(this).parent().siblings(".goods_select").children(".goods_choose").attr("data_goods_id")
+        console.log(goods_cart_id)
+        let _this = $(this)
+        $(".move_true").click(function () {
+            $.ajax({
+                type:"post",
+                url:"/moveCartGoods.do",
+                data:{
+                    goods_move,
+                    goods_cart_id,
+                    goods_id
+                },
+                success(data){
+                    if (data=='1'){
+                        alert("收藏成功!")
+                        _this.parent().parent().remove()
+                        selectedGoods()
+                    }
+                    else if(data=='2') {
+                        alert("请先登录！")
+                    }
+                    else {
+                        alert("该商品已存在收藏表里!")
+                    }
+                }
+            })
+        })
+
+    })
+
+    //收藏所有商品
+    /*function collectAllGoods(){
+        let isChecked = $("#checkAll2").prop('checked')
+        if (isChecked){
+            // console.log("全部删除")
+            $.ajax({
+                type:"post",
+                url:"/collectCartAllGoods.do",
+                data:{
+                },
+                success(data){
+                    if (data=='1'){
+                        alert("收藏成功!")
+                        $('tbody').children().remove()
+                        selectedGoods()
+                    }else {
+                        alert("收藏失败!")
+                    }
+                }
+            })
+        }
+    }*/
+
+    //选择框按钮
+    $("tbody").on("change",".goods_choose",function () {
+        let is_selcet=$(this).prop("checked")
+        let select_id=$(this).attr("data_id")
+        // console.log(select_id)
+        if (is_selcet){
+            $.ajax({
+                type:"post",
+                url:"/goodsSelectTrue.do",
+                data:{
+                    select_id
+                },
+                success(data){
+                    if (data=='1'){
+
+                    }else {
+
+                    }
+                }
+            })
+        } else {
+            $.ajax({
+                type:"post",
+                url:"/goodsSelectFalse.do",
+                data:{
+                    select_id
+                },
+                success(data){
+                    if (data=='1'){
+
+                    }else {
+
+                    }
+                }
+            })
+        }
+    })
+
+    //结算按钮
+    function settleAccounts() {
+        let total = parseInt($(".ope_total_item").text())
+        if (total==0){
+            alert("您还未选择结算商品！")
+        }else {
+            $(location).attr('href','/cart_order_process')
+        }
+    }
+</script>
+</body>
+</html>

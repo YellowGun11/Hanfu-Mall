@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商城搜索</title>
+    <link rel="stylesheet" href="../css/searchPage.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="fonts/font_iizwxr4cask/iconfont.css">
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+</head>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<%- include("common/header.ejs")%>
+<div class="content">
+    <div class="goods_list">
+        <div class="row_one clear">
+            <%goodsList.forEach((item,index)=>{%>
+            <%if ((index+2)%3==0){ %>
+            <div class="goods1_center">
+                <div class="goods_pic">
+                    <a href="/goods_detail?id=<%=item.goods_id%>">
+                        <img src="<%=item.goods_picture_main_url %>" alt="" width="250" height="328">
+                    </a>
+                </div>
+                <p class="goods_price">￥<span><%=item.goods_price%></span></p>
+                <p class="goods_name"><%=item.goods_name%></p>
+            </div>
+            <%}else{%>
+            <div class="goods1_one">
+                <div class="goods_pic">
+                    <a href="/goods_detail?id=<%=item.goods_id%>">
+                        <img src="<%=item.goods_picture_main_url %>" alt="" width="250" height="328">
+                    </a>
+                </div>
+                <p class="goods_price">￥<span><%=item.goods_price%></span></p>
+                <p class="goods_name"><%=item.goods_name%></p>
+            </div>
+            <%}%>
+            <%})%>
+        </div>
+    </div>
+    <div class="btn_list clear">
+        <div class="pre_btn" onclick="prevPage()">&lt;</div>
+        <div class="pages_btn clear">
+            <%for (var i=1;i<=pageNum;i++){%>
+            <div class="page_btn" onclick="changePage(this,<%=i%>)"><%=i%></div>
+            <%}%>
+        </div>
+        <div class="next_btn" onclick="nextPage()">&gt;</div>
+    </div>
+</div>
+<%- include("common/shouye_footer.ejs")%>
+<script src="../lib/jquery-1.11.3.js"></script>
+<script>
+
+</script>
+</body>
+</html>

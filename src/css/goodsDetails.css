@@ -1,0 +1,268 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+@font-face {
+    font-family: 'logo';
+    src: url("../fonts/logo.TTF") format('truetype');
+}
+@font-face {
+    font-family: 'kai';
+    src: url("../fonts/kaishu.ttf") format('truetype');
+}
+.clear:after{
+    content: "";
+    clear: both;
+    height: 0;
+    display: block;
+    visibility: hidden;
+}
+/*导航部分结束*/
+
+.content{
+    margin: 20px auto;
+    width: 1000px;
+    /*background-color: yellow;*/
+}
+.picture_part{
+    float: left;
+    width: 50%;
+    /*border: 1px solid red;*/
+    /*overflow: hidden;*/
+}
+.pic_left{
+    float: left;
+    margin-top: 20px;
+    margin-left: 20px;
+    width: 10%;
+
+}
+/*.pic_left>P{
+    width: 100%;
+}*/
+.pic_left>p>img{
+    /*transform: scale(0.1);*/
+    /*width: 75px;
+    height: 100px;*/
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/*仿淘宝放大镜*/
+.pic_right{
+    position: relative;
+    float: right;
+    margin-right: 20px;
+    width: 75%;
+    /*border: 1px solid  black;*/
+}
+.leftView{
+    position: relative;
+    width: 100%;
+    /*border: 1px red solid;*/
+}
+.smallImg{
+    width: auto;
+    height: auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+/*mask表示放大镜*/
+.mask{
+    width: 100px;
+    height: 150px;
+    display: none;
+    position: absolute;
+    background-color: rgba(75, 75, 75, 0.29);
+}
+.rightView{
+    position: absolute;
+    left: 458px;
+    top: 0;
+    width: 200px;
+    height: 250px;
+    overflow: hidden;
+    display: none;
+    z-index: 2;
+    /*border: 1px red solid;*/
+}
+.bigImg{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+/*仿淘宝放大镜结束*/
+
+
+.detail_part{
+    float: right;
+    width: 38%;
+    /*border: 1px solid red;*/
+}
+
+.goods_name{
+
+}
+.goods_price{
+    margin-top: 15px;
+    color: red;
+    font-size: 22px;
+    float: left;
+}
+
+.goods_name_comment,.goods_name_sale{
+    float: right;
+    width: 100px;
+
+}
+.goods_name_comment>p,.goods_name_sale>p{
+    text-align: center;
+    font-size: 12px;
+}
+.goods_name_comment>p:nth-child(1),.goods_name_sale>p:nth-child(1){
+    font-size: 16px;
+}
+
+.goods_price>span{
+    color: black;
+    font-size: 30px;
+}
+.size_text{
+    margin-top: 15px;
+}
+#goods_size{
+    margin-top: 5px;
+    width: 250px;
+    height: 40px;
+}
+.number_size,.color_text{
+    margin-top: 10px;
+}
+.goods_number{
+    margin-top: 5px;
+    width: 40px;
+    height: 30px;
+    padding-left: 10px;
+}
+.goods_color{
+    margin-top: 5px;
+}
+.buy_add{
+    margin: 0 auto;
+}
+.buy_btn{
+    /*margin: 0 auto;*/
+    float: left;
+    margin-top: 30px;
+    width: 180px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background-color: #4E656F;
+    color: white;
+    cursor: pointer;
+}
+.add_cart{
+    /*margin: 0 auto;*/
+    float: right;
+    margin-top: 30px;
+    width: 180px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    background-color: rgb(253,118,63);
+    color: white;
+    cursor: pointer;
+}
+
+.add_share{
+    margin-top: 20px;
+    margin-left: 105px;
+    clear: both;
+    /*border: 1px red solid;*/
+}
+/*好友分享*/
+.share_friends{
+    float: left;
+    font-size: 12px;
+    cursor: pointer;
+}
+.share_friends>span{
+    font-size: 18px;
+
+}
+
+.share_friends>a{
+    text-decoration: none;
+}
+/*收藏*/
+.add_favorite{
+    float: left;
+    margin-left: 30px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.add_favorite>span{
+    font-size: 18px;
+    color: red;
+}
+.add_favorite>a{
+    text-decoration: none;
+}
+/*商品详情和评论*/
+.detail_evaluate{
+    margin: 20px auto;
+    width: 1000px;
+}
+
+/*评论展示*/
+.evaluate_title{
+    text-align: center;
+    font-weight: normal;
+}
+.chose-comment{
+    width: 800px;
+    margin: 10px auto;
+}
+.evaluate_box{
+    width: 800px;
+    margin: 10px auto;
+    border-top: 1px solid rgba(0, 0, 0, 0.22);
+}
+.evaluate_box_left{
+    float: left;
+    width: 25%;
+
+}
+.user_pic{
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    margin: 10px auto;
+}
+.user_name{
+    text-align: center;
+}
+.evaluate_box_right{
+    float: left;
+    width: 74%;
+}
+.user_evaluate{
+    margin-top: 10px;
+    width: 90%;
+    word-wrap:break-word;
+    word-break:normal;
+}
+.time_size{
+    margin-top: 20px;
+    font-size: 12px;
+}
+.comments_type{
+    color: red;
+}
+.comments_more{
+    text-align: center;
+    cursor: pointer;
+}

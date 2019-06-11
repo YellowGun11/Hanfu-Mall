@@ -1,0 +1,131 @@
+.userCenter{
+    width: 1090px;
+    height: 800px;
+    margin: 0 auto;
+    padding: 0 25px;
+    position: relative;
+    /*outline: 1px solid #D5E5F4;*/
+}
+/*左侧导航*/
+.userCenter_Nav{
+    margin-top: 50px;
+    position: absolute;
+    box-shadow: 5px 5px 5px 5px rgba(65, 60, 99, 0.41);
+}
+#safety-set{
+    color: #FAAF3B;
+}
+.userCenter_set{
+    padding: 0;
+    margin: 0;
+}
+.userCenter_set>li{
+    padding: 10px 20px;
+    font-size: 16px;
+    list-style: none;
+    cursor: pointer;
+    color: #484848;
+}
+/*右侧信息栏*/
+.userCenter_content{
+    width: 850px;
+    height: 700px;
+    padding: 0 50px;
+    position: absolute;
+    right: 25px;
+    margin-top: 50px;
+    box-shadow: 2px 2px 10px 2px rgba(99, 72, 49, 0.41);
+}
+/*移入导航字体变色*/
+.userCenter_set>li:hover{
+    color: #FAAF3B;
+}
+.userCenter_title{
+    color: #484848;
+    font-size: 16px;
+    margin: 24px 0;
+}
+/*安全等级的css*/
+#safety{
+    margin-top: 36px;
+    padding-left: 50px;
+    font-size: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #D5E5F4;
+}
+
+#safety>.password{
+    display: inline-block;
+    width: 50px;
+    height: 10px;
+    border: 1px solid #CCCCCC;
+}
+/*修改密码的css*/
+.pwRegister{
+    font-size: 14px;
+    margin: 12px 0;
+    padding: 12px 0 12px 50px;
+    border-top: 1px solid #D5E5F4;
+    border-bottom: 1px solid #D5E5F4;
+ }
+.pwRegister>.span_pw{
+    color: #666666;
+    display: inline-block;
+    width: 510px;
+}
+.pwRegister>.pwAlter{
+    display: inline-block;
+    color: #66bccc;
+    font-size: 14px;
+    cursor: pointer;
+}
+/*绑定手机的css*/
+.bindingPho{
+    padding-left: 50px;
+    font-size: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #D5E5F4;
+}
+.bindingPho>.span_ph{
+    color: #666666;
+    display: inline-block;
+    width: 510px;
+}
+.bindingPho>.binding{
+    display: inline-block;
+    color: #4b96cc;
+    font-size: 14px;
+    cursor: pointer;
+}
+/*修改密码mode的css*/
+.password-amend,.binding-mode{
+    font-size: 12px;
+    padding-left: 100px;
+    display: none;
+
+}
+.password-p,.binding-p{
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+}
+.modification,.binding-input{
+    margin: 10px 0 ;
+}
+.button-amend,.button-binding{
+    /*border: none;*/
+    font-size: 14px;
+    display: inline-block;
+    margin-left: 170px;
+    border-radius: 3px;
+    padding: 3px 10px;
+    cursor: pointer;
+    background-color: #FF6C00;
+}
+/*绑定手机的确定按钮css*/
+.phone-submit{
+    border-radius: 3px;
+    padding: 3px 10px;
+    cursor: pointer;
+    background-color: #969696;
+}

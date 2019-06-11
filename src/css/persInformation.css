@@ -1,0 +1,206 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.userCenter{
+    width: 1090px;
+    height: 800px;
+    margin: 0 auto;
+    padding: 0 25px;
+    position: relative;
+    /*outline: 1px solid red;*/
+}
+/*左侧导航*/
+.userCenter_Nav{
+    margin-top: 50px;
+    position: absolute;
+    box-shadow: 5px 5px 5px 5px rgba(65, 60, 99, 0.41);
+}
+.userCenter_set{
+    padding: 0;
+    margin: 0;
+}
+.userCenter_set>li{
+    padding: 10px 20px;
+    font-size: 16px;
+    list-style: none;
+    cursor: pointer;
+    color: #484848;
+}
+.userCenter_set>li>a{
+    text-decoration: none;
+    color: #484848;
+}
+.userCenter_set>li>a:hover{
+    color: #FAAF3B;
+}
+#user_personnal{
+    color: #FAAF3B;
+}
+/*右侧信息栏*/
+.userCenter_content{
+    width: 850px;
+    height: 700px;
+    padding-left: 50px;
+    position: absolute;
+    right: 25px;
+    margin-top: 50px;
+    box-shadow: 2px 2px 10px 2px rgba(99, 72, 49, 0.41);
+}
+/*小标题*/
+.userCenter_title {
+    color: #484848;
+    font-size: 16px;
+    margin: 24px 0;
+}
+/*头像*/
+.userCenter_hp{
+    width: 332px;
+    margin-top: 24px;
+    float: left;
+    /*outline: 1px solid gainsboro;*/
+}
+.userCenter_headPhoto{
+    width: 160px;
+    height: 160px;
+    border: 1px solid lightgray;
+    border-radius: 160px;
+    margin-left: 60px;
+    overflow: hidden;
+}
+.userCenter_headPhoto>img{
+    width: 180px;
+}
+
+/*竖线*/
+.userCenter_line{
+    width: auto;
+    height: 500px;
+    border-left: 1px solid lightgray;
+    float: left;
+}
+/*基本信息表*/
+.userCenter_userInform{
+    float: left;
+    font-size: 14px;
+    color: #484745;
+}
+.userInform{
+    margin-top: 24px;
+}
+.userInformSave{
+    border: 0;
+    background: #683c1c;
+    padding: 10px 36px;
+    border-radius: 2px;
+    margin-top: 30px;
+    color: #eeeeee;
+    cursor: pointer;
+}
+
+.userNews{
+    width: 220px;
+    height: 30px;
+    border: 1px solid #dfdfdf;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+/*保存个人信息成功的弹出框*/
+.user_persInform_event{
+    position: absolute;
+    top: 53%;
+    left: 67%;
+    z-index: 888;
+    display: none;
+}
+.user_persInform_dialog{
+    width: 180px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #684029;
+    font-size: 16px;
+    padding: 10px 16px;
+    border-radius: 2px;
+    color: #eeeeee;
+}
+/*上传头像按钮样式*/
+/*选择按钮样式*/
+.userChoosePh{
+    width: 120px;
+    height: 28px;
+    position: relative;
+    overflow: hidden;
+    display: block;
+    background: #684029;
+    padding: 2px 0;
+    border-radius: 2px;
+    margin: 30px 0 0 28px;
+    color: #eeeeee;
+    text-align: center;
+    cursor: pointer;
+    float: left;
+}
+.userChoosePh>span{
+    cursor: pointer;
+    display: block;
+    line-height: 28px;
+}
+/*input file的样式*/
+.userChoosePhFile{
+    width: 120px;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    left:0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+}
+/*头像路径*/
+#userPhotoSrc{
+    width: 180px;
+    height: 28px;
+    margin: 5px 0 0 28px;
+    border: 1px solid #dfdfdf;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+.userUploadBtn{
+    border: 0;
+    background: #684029;
+    padding: 8px 24px;
+    border-radius: 2px;
+    margin: 30px 0 0 20px;
+    color: #eeeeee;
+    cursor: pointer;
+}
+/*图片预览*/
+.photoShowingDiv{
+    width: 280px;
+    height: 280px;
+    margin: 10px;
+    overflow: hidden;
+    position: relative;
+    display: none;
+}
+.photoShowingDiv>img{
+    width: 280px;
+    display: none;
+}
+.closePhotoShowing{
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background-color: #dfdfdf;
+    line-height: 30px;
+    text-align: center;
+    font-size: 16px;
+    color: #484848;
+    position: absolute;
+    top: 5px;
+    left: 245px;
+    visibility: hidden;
+    cursor: pointer;
+}

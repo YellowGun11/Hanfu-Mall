@@ -1,0 +1,158 @@
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+    }
+    @font-face {
+        font-family: 'logo';
+        src: url("../../fonts/logo.TTF") format('truetype');
+    }
+    @font-face {
+        font-family: 'kai';
+        src: url("../../fonts/kaishu.ttf") format('truetype');
+    }
+    .clear:after{
+        content: "";
+        clear: both;
+        height: 0;
+        display: block;
+        visibility: hidden;
+    }
+    header{
+        position: relative;
+        background-color: #4E656F;
+        height: 70px;
+        max-width: 1349px;
+        min-width: 1000px;
+        color: white;
+        overflow: hidden;
+    }
+    .logo-text{
+        float: left;
+        font-family: logo;
+        font-size: 50px;
+        /*font-weight: normal;*/
+        margin: 0;
+        margin-left: 70px;
+        height: 70px;
+        line-height: 70px;
+    }
+    .shopping{
+        font-family: 方正准圆_GBK;
+        float: left;
+        margin-top: 37px;
+        margin-left: 20px;
+        cursor: pointer;
+    }
+    .shopping>a{
+        text-decoration: none;
+        color: white;
+    }
+    .nav{
+        margin-top: 33px;
+        margin-left: 30px;
+        float: left;
+        list-style: none;
+
+    }
+    .nav>li{
+        float: left;
+        padding: 0 10px;
+    }
+    .nav>li:nth-child(2){
+        /*border-right: 1px solid white;*/
+        border-left: 1px solid white;
+    }
+    .nav>li>a{
+        font-family: kai;
+        /*font-weight: bold;*/
+        text-decoration: none;
+        color: white;
+    }
+    .header_text{
+        font-family: kai;
+        float: left;
+        margin-left: 100px;
+        height: 70px;
+        line-height: 70px;
+        font-size: 32px;
+
+    }
+    .header_search{
+        float: right;
+        margin-right: 70px;
+        margin-top: 20px;
+        width: 235px;
+        height: 30px;
+        background-color: rgba(255, 255, 255, 0.21);
+        border-radius: 17px;
+        border: none;
+        outline: none;
+        padding-left: 15px;
+        color: white;
+    }
+    .search_icon{
+        right: 81px;
+        top: 22px;
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        cursor: pointer;
+    }
+    .search_icon>img{
+        width: 25px;
+        height: 25px;
+    }
+    input::-webkit-input-placeholder {
+        color:    black;
+    }
+    input:-moz-placeholder {
+        color:    black;
+    }
+    input::-moz-placeholder {
+        color:    black;
+    }
+    input:-ms-input-placeholder {
+        color:    black;
+    }
+</style>
+
+<header class="clear">
+    <h1 class="logo-text">采薇</h1>
+    <p class="shopping"><a href="/shopping_home">商城</a></p>
+    <ul class="nav clear">
+        <li><a href="/goods_women">汉服女装</a></li>
+        <li><a href="/goods_acc">汉服配饰</a></li>
+        <!--<li><a href="#">季节分区</a></li>-->
+    </ul>
+    <p class="header_text">岂曰无衣,与子同袍</p>
+    <input type="text" class="header_search" placeholder="输入汉服的关键字或类型" onkeypress="if(event.keyCode==13) {searchGoods();return false;}"  maxlength="20" onkeyup="checkLength(this, 30);">
+    <div class="search_icon" onclick="searchGoods()">
+        <img src="../../images/search_icon.png" alt="">
+    </div>
+</header>
+
+<script>
+    // 限制中英文皆可输入的文本框长度
+    var checkLength = function(dom, maxLength){
+        var l = 0;
+        for(var i=0; i<dom.value.length; i++) {
+            /*/[\u4e00-\u9fa5]/ 为匹配汉字的正则。*/
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l+=2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0,i);
+                break;
+            }
+        }
+    };
+    function searchGoods() {
+        let search_goods = $(".header_search").val()
+        console.log(search_goods)
+        $(location).attr('href', `/search_page?name=${search_goods}`)
+    }
+
+</script>

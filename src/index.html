@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>采薇商城</title>
+    <link rel="stylesheet" href="css/shopHome.css">
+</head>
+<body>
+    <header class="clear">
+        <h1 class="logo-text">采薇</h1>
+        <p class="shopping">商城</p>
+        <ul class="nav clear">
+            <li><a href="#">汉服女装</a></li>
+            <li><a href="#">汉服配饰</a></li>
+            <li><a href="#">季节分区</a></li>
+        </ul>
+        <p class="header_text">岂曰无衣,与子同袍</p>
+        <input type="text" class="header_search" maxlength="20" onkeyup="checkLength(this, 30);">
+        <div class="search_icon">
+            <img src="images/search_icon.png" alt="">
+        </div>
+    </header>
+    <div class="banner clear">
+        <div class="banner_text">
+            <img src="images/banner_san.png" alt="" width="1099" height="400">
+        </div>
+        <div class="banner_girl">
+            <img src="images/xujiao.png" alt="" width="299" height="500">
+        </div>
+    </div>
+    <div class="content">
+        <div class="sale_sub clear">
+            <div class="sub_one">
+                <img src="images/158rmb.png" alt="">
+            </div>
+            <div class="sub_two">
+                <img src="images/238rmb.png" alt="">
+            </div>
+            <div class="sub_three">
+                <img src="images/338rmb.png" alt="">
+            </div>
+            <div class="sub_four">
+                <img src="images/438rmb.png" alt="">
+            </div>
+        </div>
+        <div class="hot_part clear">
+            <div class="hot_one">
+                <div>
+                    <img src="images/hot_one.png" alt="" width="200" height="417">
+                </div>
+                <button class="hot_one_btn">立即购买</button>
+            </div>
+            <div class="hot_two">
+                <div>
+                    <img src="images/hot_one.png" alt="" width="200" height="417">
+                </div>
+                <button class="hot_two_btn">立即购买</button>
+            </div>
+            <div class="hot_three">
+                <div>
+                    <img src="images/hot_one.png" alt="" width="200" height="417">
+                </div>
+                <button class="hot_three_btn">立即购买</button>
+            </div>
+        </div>
+        <div class="recommend_part clear">
+            <div class="recommend_one">
+                <div>
+                    <img src="images/hot_one.png" alt="" width="200" height="417">
+                </div>
+                <button class="recommend_one_btn">立即购买</button>
+            </div>
+            <div class="recommend_two">
+                <div>
+                    <img src="images/hot_one.png" alt="" width="200" height="417">
+                </div>
+                <button class="recommend_two_btn">立即购买</button>
+            </div>
+            <div class="recommend_three">
+                <div>
+                    <img src="images/hot_one.png" alt="" width="200" height="417">
+                </div>
+                <button class="recommend_three_btn">立即购买</button>
+            </div>
+        </div>
+    </div>
+
+    
+    
+    
+    <script>
+        // 限制中英文皆可输入的文本框长度
+        var checkLength = function(dom, maxLength){
+            var l = 0;
+            for(var i=0; i<dom.value.length; i++) {
+                /*/[\u4e00-\u9fa5]/ 为匹配汉字的正则。*/
+                if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                    l+=2;
+                } else {
+                    l++;
+                }
+                if (l > maxLength) {
+                    dom.value = dom.value.substr(0,i);
+                    break;
+                }
+            }
+        };
+    </script>
+</body>
+</html>

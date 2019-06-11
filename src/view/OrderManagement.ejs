@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单管理</title>
+    <link type="text/css" href="../css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/userAdmin.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="fonts/font_iizwxr4cask/iconfont.css">
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .table tbody tr td{
+        vertical-align: middle;
+    }
+    .clear:after{
+        content: "";
+        height: 0;
+        display: block;
+        overflow: hidden;
+        clear: both;
+    }
+</style>
+<style>
+</style>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<div class="userCenter">
+    <!--导航-->
+    <div class="userCenter_Nav">
+        <ul class="userCenter_set">
+            <li class="userCenter-li"><a href="/per_info">个人信息</a></li>
+            <li class="userCenter-li"><a href="/deli_address">收货地址</a></li>
+            <li class="userCenter-li" id="indent-admin"><a href="/order_management">订单管理</a></li>
+            <li class="userCenter-li" id="safety-set"><a href="/safe_setting">安全设置</a></li>
+            <li  class="userCenter-li" ><a href="/collection_goods">收藏</a></li>
+        </ul>
+    </div>
+    <!--右边对应内容-->
+    <div class="userCenter_content">
+        <div class="userCenter_title">
+            订单管理
+        </div>
+        <table class="indent-nav table .table-hover">
+            <theda  class="text-center" >
+                <tr class="indent-ul clear">
+                    <th  class="text-center"  colspan="2" >订单编号</th>
+                    <th   class="text-center" >消费金额</th>
+                    <th   class="text-center" >下单时间</th>
+                    <th  class="text-center"  >状态</th>
+                    <th   class="text-center" >操作</th>
+                </tr>
+            </theda>
+            <tbody class="all_contend" >
+            <%data.forEach(function (item,index) {%>
+            <%if (index<8   ){ %>
+            <%
+                function timestampToTime(timestamp) {
+                    var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
+                    var Y = date.getFullYear() + "-"; //此时为四位数字表示 getYear()的话为两位数字表示
+                    var M =
+                            (date.getMonth() + 1 < 10
+                                    ? "0" + (date.getMonth() + 1)
+                                    : date.getMonth() + 1) + "-"; //当前月份(0-11,0代表1月)
+                    var D = date.getDate() + " "; //当前日(1-31)
+                    var h = date.getHours() + ":";
+                    var m =
+                            (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) +
+                            ":";
+                    var s = date.getSeconds();
+                    var ms = ":" + date.getMilliseconds(); //毫秒值
+
+                    return Y + M + D + h + m + s; //此处可以自定义需要的显示类型
+                }
+            %>
+            <tr class="indent-ul clear userId"  data-orderId="<%=item.order_id%>">
+                <td class="text-center" colspan="2" ><%=item.order_id%></td>
+                <td  class="text-center" ><%=item.order_pay_money%></td>
+                <td  class="text-center" ><%=timestampToTime(item.order_time)%></td>
+                <td  class="text-center">
+                    <%if(item.order_is_finish==0){%>
+                    <button data-toggle="modal" data-target=".bs-example-modal-lg" data-money="<%=item.order_pay_money%>" class="btn btn-danger  get_pay_id"  onclick="not_get_pay(this,<%=item.order_id%>)">未支付</button>
+                    <%}else if(item.order_is_finish==1){%>
+                        <span class="btn btn-info">待发货</span>
+                    <%}else if(item.order_is_finish==2){%>
+                        <span class="btn btn-warning" data-id="<%=item.order_id%>" onclick="not_get_goods(this,<%=item.order_id%>)">待收货</span>
+                    <%}else if(item.order_is_finish==3){%>
+                        <span class="btn btn-success" >已完成</span>
+                    <%}%>
+                </td>
+                <td class="text-center">
+                    <span class="btn btn-success" data-orderId="<%=item.order_id%>" onclick="lookOrder(this)">查看</span>
+                    <span class="btn btn-danger" data-orderStatus="<%=item.order_is_finish%>" data-orderId="<%=item.order_id%>" onclick="delOrder(this)">删除</span>
+                </td>
+            </tr>
+            <%}%>
+            <%})%>
+            <!--$(".indent-li").eq(4).attr("data-id")-->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--未付款模态框-->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">请选择支付方式</h4>
+            </div>
+            <div class="modal-body">
+                <p>订单编号：<span class="pay_order_id"></span></p>
+                <p>支付金额：￥<span class="pay_money"></span></p>
+                <h4>付款方式</h4>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="支付宝" checked>支付宝二维码支付
+                    </label>
+                    <label>
+                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="微信">微信二维码支付
+                    </label>
+                </div>
+                <div class="erwei_ma">
+                    <img src="../images/zhifubao.jpg" alt="" width="500">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="submitPay()">确认支付</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--评论模态框-->
+<div class="modal fade comment-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">商品评价</h4>
+            </div>
+            <div class="modal-body">
+                <p>商品名字：<span class="comment_goods_name"></span></p>
+                <p>商品尺寸：<span class="comment_goods_size"></span></p>
+                <p>评价等级</p>
+                <div class="comment-type">
+                    <label>
+                        <input type="radio" name="commentRadios" id="Radios1" value="好评" checked>好评
+                    </label>
+                    <label>
+                        <input type="radio" name="commentRadios" id="Radios2" value="中评">中评
+                    </label>
+                    <label>
+                        <input type="radio" name="commentRadios" id="Radios3" value="差评">差评
+                    </label>
+                </div>
+                <div>
+                    <textarea class="commment-text" rows="5" placeholder="请输入文字评价。" style="resize: none;width: 400px;"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary submit-comment" onclick="submitComment(this)">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--订单详情的模态框-->
+<div class="user_detailOrder_event">
+    <div class="user_detailOrder_dialog">
+        <div class="user_detailOrder_dialog_title">
+            <span class="fL">订单详情</span>
+            <span class="user_detailOrder_dialog_del fR" onclick="delEditAddressDialog()">X</span>
+        </div>
+        <div class="user_detailOrder_form">
+
+        </div>
+    </div>
+</div>
+
+<!-- 模态框的背景遮罩层-->
+<div class="addAddress_bg_cover"></div>
+<%- include("common/shouye_footer.ejs")%>
+<!--js模块-->
+<script src="../lib/jquery-1.11.3.js"></script>
+<script>
+    //订单详情
+    function lookOrder(one){
+        console.log($(one).attr("data-orderId"))
+        let orderId=$(one).attr("data-orderId")
+        $(".user_detailOrder_event").fadeIn("fast");
+        $(".addAddress_bg_cover").fadeIn("fast")
+        $(".user_detailOrder_form").html('')
+        $.ajax({
+            type:"post",
+            url:"/getOrderDetail.do",
+            data:{orderId},
+            success(data){
+                console.log(data)
+                let arr=data
+                if (arr[0].order_is_finish==0){
+                    arr[0].order_is_finish='未支付'
+                }
+                else if (arr[0].order_is_finish==1){
+                    arr[0].order_is_finish='待发货'
+                }
+                else if (arr[0].order_is_finish==2){
+                    arr[0].order_is_finish='待收货'
+                }
+                else if (arr[0].order_is_finish==3){
+                    arr[0].order_is_finish='已完成'
+                }
+                $(".user_detailOrder_form").append(`
+                        <p><span>订单编号:</span><span>${orderId}</span></p>
+                        <p><span>订单状态:</span><span>${arr[0].order_is_finish}</span></p>
+                        <p><span>收货信息:</span><span>${arr[0].order_details_addr}</span></p>
+                    `)
+                data.forEach((item,index)=>{
+                    $(".user_detailOrder_form").append(`
+                        <div style="border:1px solid red; margin-bottom: 5px;padding-left: 10px;">
+                            <p>商品名称:<span>${item.goods_name}</span></p>
+                           <p>商品尺寸:<span>${item.goods_size}</span></p>
+                           <p>商品数量:<span>${item.goods_num}</span></p>
+                           <p>商品单价:<span>${item.goods_price}</span></p>
+                        </div>
+                    `)
+                    console.log(item.goods_is_comment==0)
+                    console.log(item.order_is_finish=='已完成')
+                    if (item.goods_is_comment==0&&item.order_is_finish=='已完成') {
+                        $(".user_detailOrder_form").append(`
+                           <button data-toggle="modal" data-target=".comment-modal-lg" data-orderId=${item.order_details_id} data-goodsId=${item.goods_id} data-goodsName=${item.goods_name} data-goodsSize=${item.goods_size} class="btn btn-success comment-goods" onclick="commentGoods(this)">评价</button>
+                    `)
+                    }
+                })
+            }
+        })
+    }
+    //关闭订单详情窗口
+    function delEditAddressDialog() {
+        $(".user_detailOrder_event").fadeOut("fast");
+        $(".addAddress_bg_cover").fadeOut("fast")
+    }
+    //删除订单按钮
+    function delOrder(one) {
+        let orderStatus=$(one).attr("data-orderStatus")
+        let orderId=$(one).attr("data-orderId")
+        if (orderStatus==0){
+            var statu = confirm("此操作将永久删除该订单, 是否继续?");
+            if(!statu){
+                return false;
+            }
+            $.ajax({
+                type:"post",
+                url:"/delOrder.do",
+                data:{
+                    orderId
+                },
+                success(data){
+                    if (data=='1'){
+                        alert("删除成功！")
+                        $(location).attr('href', `/order_management`)
+                    }else {
+                        alert("删除失败！")
+                    }
+                }
+            })
+        }
+        else {
+            alert("该订单状态下无法删除!")
+        }
+
+    }
+    //未支付按钮
+    function not_get_pay(one,orderId) {
+        $(".pay_order_id").text(orderId)
+        let payMoney=$(one).attr("data-money")
+        $(".pay_money").text(payMoney)
+    }
+    //支付宝微信支付切换
+    $(function(){
+        $(":radio").click(function() {
+            var val=$('input:radio[name="optionsRadios"]:checked').val();
+            if (val=='支付宝'){
+                $('.erwei_ma img').attr('src','../images/zhifubao.jpg')
+            }
+            else if (val=='微信'){
+                $('.erwei_ma img').attr('src','../images/weixin.jpg')
+            }
+        });
+    });
+    //提交支付按钮（假支付，点击表示付款）
+    function submitPay() {
+        let order_id=$(".pay_order_id").text()
+        let pay_type=$("input[name='optionsRadios']:checked").val();
+        $.ajax({
+            type:"post",
+            url:"/paySuccess.do",
+            data:{
+                order_id,
+                pay_type
+            },
+            success(data){
+                if (data=='1'){
+                    alert("支付成功！")
+                    $(location).attr('href', `/order_management`)
+                }else {
+                    alert("支付失败！")
+                }
+            }
+        })
+    }
+    //代收货按钮
+    function not_get_goods(one,orderId) {
+        let order_id =$(one).attr("data-id")
+        // let order_id=orderId
+        var status = confirm("确认收货吗?");
+        if(!status){
+            return false;
+        }
+        $.ajax({
+            type:"post",
+            url:"/finishOrder.do",
+            data:{
+                order_id
+            },
+            success(data){
+                if (data=='1'){
+                    alert("操作成功！")
+                    $(location).attr('href', `/order_management`)
+                }else {
+                    alert("操作失败！")
+                }
+            }
+        })
+    }
+
+    //商品评价按钮
+    function commentGoods(that) {
+        let details_id=$(that).attr("data-orderId")
+        let goodsId=$(that).attr("data-goodsId")
+        let goodsName=$(that).attr("data-goodsName")
+        let goodsSize=$(that).attr("data-goodsSize")
+        $(".comment_goods_name").text(goodsName)
+        $(".comment_goods_size").text(goodsSize)
+        $(".submit-comment").attr("data-detailId",details_id)
+        $(".submit-comment").attr("data-goodsId",goodsId)
+        console.log(details_id)
+        console.log(goodsId)
+    }
+    //评价提交按钮
+    function submitComment(that) {
+        let comment_type=$("input[name='commentRadios']:checked").val();
+        let comment_text=$(".commment-text").val();
+        let goods_size=$(".comment_goods_size").text()
+        let goods_id=$(that).attr("data-goodsId")
+        let detail_id=$(that).attr("data-detailId")
+        $.ajax({
+            type:"post",
+            url:"/submitComment.do",
+            data:{
+                detail_id,
+                goods_id,
+                goods_size,
+                comment_type,
+                comment_text
+            },
+            success(data){
+                if (data=='1'){
+                    alert("评论成功！")
+                    $(location).attr('href', `/order_management`)
+                }else {
+                    alert("操作失败！")
+                }
+            }
+        })
+    }
+
+    function getGoods() {
+        $.ajax({
+            type:"post",
+            url:"/getGoods.do",
+            data:{order_id},
+            success(data) {
+                if (Number(data)){
+                    not_get_goods()
+                    $(".user_addAddress_event").css({display:"none"})
+                    console.log("成功")
+                } else {
+                    console.log("失败")
+                }
+            }
+        })
+    }
+
+
+
+</script>
+
+</body>
+</html>

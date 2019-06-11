@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>采薇商城</title>
+    <link rel="stylesheet" href="../css/shopHome.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../fonts/font_iizwxr4cask/iconfont.css">
+
+</head>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<%- include("common/header.ejs")%>
+<div class="banner clear">
+    <div class="banner_text">
+        <img src="../images/banner_san.png" alt="" width="1099" height="400">
+    </div>
+    <div class="banner_girl">
+        <img src="../images/xujiao.png" alt="" width="299" height="500">
+    </div>
+</div>
+<div class="content">
+    <!--<div class="sale_sub clear">
+        <div class="sub_one">
+            <img src="../images/158rmb.png" alt="">
+        </div>
+        <div class="sub_two">
+            <img src="../images/238rmb.png" alt="">
+        </div>
+        <div class="sub_three">
+            <img src="../images/338rmb.png" alt="">
+        </div>
+        <div class="sub_four">
+            <img src="../images/438rmb.png" alt="">
+        </div>
+    </div>-->
+    <div class="hot_part clear">
+        <%hotList.forEach((item,index)=>{%>
+        <%if (index==1){ %>
+        <div class="hot_one hot_two">
+            <div>
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    <img src="<%=item.goods_picture_main_url %>" alt="" width="190" height="250">
+                </a>
+            </div>
+            <p class="hot_one_name"><%=item.goods_name%></p>
+            <p class="hot_one_price">￥<span><%=item.goods_price%></span></p>
+            <button class="hot_one_btn">
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    立即购买
+                </a>
+            </button>
+        </div>
+        <%}else{%>
+        <div class="hot_one">
+            <div>
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    <img src="<%=item.goods_picture_main_url %>" alt="" width="190" height="250">
+                </a>
+            </div>
+            <p class="hot_one_name"><%=item.goods_name%></p>
+            <p class="hot_one_price">￥<span><%=item.goods_price%></span></p>
+            <button class="hot_one_btn">
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    立即购买
+                </a>
+            </button>
+        </div>
+        <%}%>
+        <%})%>
+    </div>
+    <div class="recommend_part clear">
+        <%recList.forEach((item,index)=>{%>
+        <%if (index==1){ %>
+        <div class="recommend_one hot_two">
+            <div>
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    <img src="<%=item.goods_picture_main_url %>" alt="" width="190" height="250">
+                </a>
+            </div>
+            <p class="hot_one_name"><%=item.goods_name%></p>
+            <p class="hot_one_price">￥<span><%=item.goods_price%></span></p>
+            <button class="hot_one_btn">
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    立即购买
+                </a>
+            </button>
+        </div>
+        <%}else{%>
+        <div class="recommend_one">
+            <div>
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    <img src="<%=item.goods_picture_main_url %>" alt="" width="190" height="250">
+                </a>
+            </div>
+            <p class="recommend_one_name"><%=item.goods_name%></p>
+            <p class="recommend_one_price">￥<span><%=item.goods_price%></span></p>
+            <button class="recommend_one_btn">
+                <a href="/goods_detail?id=<%=item.goods_id%>">
+                    立即购买
+                </a>
+            </button>
+        </div>
+        <%}%>
+        <%})%>
+    </div>
+</div>
+
+<%- include("common/shouye_footer.ejs")%>
+
+<script src="../lib/jquery-1.11.3.js"></script>
+<script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+<script>
+    // 限制中英文皆可输入的文本框长度
+    var checkLength = function(dom, maxLength){
+        var l = 0;
+        for(var i=0; i<dom.value.length; i++) {
+            /*/[\u4e00-\u9fa5]/ 为匹配汉字的正则。*/
+            if (/[\u4e00-\u9fa5]/.test(dom.value[i])) {
+                l+=2;
+            } else {
+                l++;
+            }
+            if (l > maxLength) {
+                dom.value = dom.value.substr(0,i);
+                break;
+            }
+        }
+    };
+    function searchGoods() {
+        let search_goods = $(".header_search").val()
+        console.log(search_goods)
+        $(location).attr('href', `/search_page?name=${search_goods}`)
+    }
+</script>
+</body>
+</html>

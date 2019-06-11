@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情</title>
+    <link href="../css/css.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="../css/goodsDetails.css">
+    <link rel="stylesheet" href="../css/iconfont.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="fonts/font_iizwxr4cask/iconfont.css">
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/kefu.js"></script>
+</head>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<%- include("common/header.ejs")%>
+<div class="content clear">
+    <div class="picture_part clear">
+        <div class="pic_left">
+            <p onclick="chooseImg(this)"><img src="<%=goodsList[0].goods_picture_url_1%>" alt=""></p>
+            <p onclick="chooseImg(this)"><img src="<%=goodsList[0].goods_picture_url_2%>" alt=""></p>
+            <p onclick="chooseImg(this)"><img src="<%=goodsList[0].goods_picture_url_3%>" alt=""></p>
+            <p onclick="chooseImg(this)"><img src="<%=goodsList[0].goods_picture_url_4%>" alt=""></p>
+            <p onclick="chooseImg(this)"><img src="<%=goodsList[0].goods_picture_url_5%>" alt=""></p>
+        </div>
+        <div class="pic_right">
+            <div class="leftView">
+                <!--mask表示放大镜-->
+                <div class="mask"></div>
+                <img class="smallImg" src="<%=goodsList[0].goods_picture_url_1%>" alt="缩小版">
+            </div>
+            <div class="rightView">
+                <img src="<%=goodsList[0].goods_picture_url_1%>" alt="放大版" class="bigImg">
+            </div>
+        </div>
+        <div class="add_share clear">
+            <div class="clear" >
+                <p class="share_friends"><span class="iconfont icon-iconfontfenxiang3"></span><a href="javascript:;" id="qq_id" onclick="qqFriend()">分享给好友</a></p>
+                <p class="add_favorite"><span class="iconfont icon-shoucang"></span><a class="is_collect" onclick="collectChange()">收藏</a></p>
+            </div>
+            <p style="font-size: 12px;color: red;padding-top: 5px;display: none; ">全国包邮</p>
+        </div>
+    </div>
+    <div class="detail_part">
+        <h2 class="goods_name"><%=goodsList[0].goods_name%></h2>
+        <div class="clear">
+            <%if(Number(goodsList[0].goods_discount_price)<1){%>
+            <p style="text-decoration:line-through;font-size: 16px;" >￥<span><%=goodsList[0].goods_price%></span> </p>
+            <%}%>
+            <p class="goods_price">￥<span class="goods_price_item"><%=(goodsList[0].goods_price *goodsList[0].goods_discount_price).toFixed(2)%></span> </p>
+            <div class="goods_name_comment">
+                <p><%=goodsList[0].goods_comments%></p>
+                <p>累计评论</p>
+            </div>
+            <div class="goods_name_sale">
+                <p><%=goodsList[0].goodsDetails_sale%></p>
+                <p>销售数量</p>
+            </div>
+        </div>
+        <p class="size_text">Size</p>
+        <select name="size" id="goods_size">
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+        </select>
+        <div>
+            <p class="number_size">数量</p>
+            <div>
+                <input class="goods_number" type="number" value="1" min="1" max="5">
+                <div style="color: red;">
+                    <span >库存量：</span><span class="size_num"><%=goodsList[0].goodsDetails_s%></span>
+                    <p style="display: none"><span class="s_num"><%=goodsList[0].goodsDetails_s%></span> <span class="m_num"><%=goodsList[0].goodsDetails_m%></span> <span class="l_num"><%=goodsList[0].goodsDetails_l%></span></p>
+                </div>
+
+            </div>
+        </div>
+        <div class="buy_add clear">
+            <div class="buy_btn" onclick="buyGoods()">立即购买</div>
+            <div class="add_cart" onclick="addCart()">加入购物车</div>
+        </div>
+        <div style="margin-top: 10px">
+            <p>承诺：<span>7天无理由</span></p>
+            <p>支付：<span>支付宝</span> <span>微信</span></p>
+        </div>
+    </div>
+</div>
+<div class="detail_evaluate">
+    <hr>
+    <div style="text-align: center">
+        <img src="<%=goodsList[0].goods_pictrue_detail%>" alt="">
+    </div>
+    <div style="text-align: center">
+        <img src="../images/size.jpg" alt="">
+    </div>
+    <hr>
+    <div class="evaluate_part">
+        <h1 class="evaluate_title">宝贝评论(<%=commentLength%>)</h1>
+        <div class="chose-comment">
+            <input type="radio" name="commentType" value="全部" checked>
+            <span>全部</span>
+            <input type="radio" name="commentType" value="好评" >
+            <span>好评</span>
+            <input type="radio" name="commentType" value="中评">
+            <span>中评</span>
+            <input type="radio" name="commentType" value="差评">
+            <span>差评</span>
+        </div>
+        <div class="evaluate_content_part">
+            <%commentList.forEach((item,index)=>{%>
+            <div class="evaluate_box clear">
+                <div class="evaluate_box_left">
+                    <div class="user_pic">
+                        <img src="<%=item.user_header_url%>" alt="" width="50">
+                    </div>
+                    <p class="user_name"><%=item.user_account%></p>
+                </div>
+                <div class="evaluate_box_right">
+                    <p class="user_evaluate"><%=item.comments_content%></p>
+                    <div class="commets_pic">
+                        <img src="<%=item.comments_img_url%>" alt="" width="30">
+                    </div>
+                    <p class="time_size"><span><%=(new Date(item.comments_time)).getFullYear()+'-'+((new Date(item.comments_time)).getMonth()+1)+'-'+(new Date(item.comments_time)).getDate()%></span> 尺码:<span><%=item.good_size%></span> --<span class="comments_type"><%=item.comments_type%></span></p>
+                </div>
+            </div>
+            <%})%>
+        </div>
+        <p class="comments_more">--更多--</p>
+    </div>
+</div>
+
+<%- include("common/shouye_footer.ejs")%>
+<script src="../lib/jquery-1.11.3.js"></script>
+<script>
+    $(function(){
+        //计算放大镜的长宽
+        /*calculateMaskWH();*/
+        //监听鼠标mouseover事件
+        $('.leftView').on('mouseover',function(){
+
+            $('.mask').css('display','block');
+            $('.rightView').css('display','block');
+        });
+        //监听鼠标mouseout事件
+        $('.leftView').on('mouseout',function(){
+            $('.mask').css('display','none');
+            $('.rightView').css('display','none');
+        });
+        $('.leftView').on('mousemove',function(event){
+            //计算放大镜的left值和top值  将放大镜移动至以鼠标为中心的位置
+            var left=event.clientX-$(this).offset().left-$('.mask').width()/2;
+            // var left=event.pageX-$(this).offset().left-$('.mask').width()/2;
+            var top=event.clientY-$(this).offset().top-$('.mask').height()/2;
+            //判断放大镜左右是否出界
+            if(left<0){
+                left=0
+            }else if(left>$(this).width()-$('.mask').width()){
+                left=$(this).width()-$('.mask').width();
+            }
+            //判断放大镜上下是否出现
+            if(top<0){
+                top=0;
+            }else if(top>$(this).height()-$('.mask').height()){
+                top=$(this).height()-$('.mask').height();
+            }
+            $('.mask').css({
+                left:left+'px',
+                top:top+'px'
+            });
+            //计算比例
+            var rate=$('.bigImg').width()/$('.leftView').width();
+            $('.bigImg').css({
+                left:-rate*left+'px',
+                top:-rate*top+'px'
+            });
+        });
+        //计算机放大镜的长宽
+        /*function calculateMaskWH(){
+            var width=$('.leftView').width()/$('.bigImg').width()*$('.rightView').width();
+            console.log(width)
+            var height=$('.leftView').height()/$('.bigImg').height()*$('.rightView').height();
+            console.log(height)
+            $('.mask').css({
+                "width":width,
+                "height":height
+            });
+        }*/
+    });
+    function chooseImg(imgParent) {
+        let path = $(imgParent).children('img')[0].src
+        $(".smallImg").attr('src',path)
+        $(".bigImg").attr('src',path)
+    }
+
+    //商品尺寸改变触发事件
+    $("#goods_size").change(function () {
+        let result=$("#goods_size").val()
+        if (result=="S"){
+            $(".size_num").text($(".s_num").text())
+        }
+        else if(result=="M"){
+            $(".size_num").text($(".m_num").text())
+        }
+        else if(result=="L"){
+            $(".size_num").text($(".l_num").text())
+        }
+
+    })
+
+
+    //商品数量失焦事件
+    $(".goods_number").blur(function(){
+        let num=$(".goods_number").val()
+        if (num<1||num>5){
+            $(".goods_number").val(1)
+        }
+    });
+
+    //qq好友分享
+    function qqFriend() {
+        // var test = window.location.href
+        // console.log(test)
+        var p = {
+            /*获取URL，可加上来自分享到QQ标识，方便统计*/
+            url: 'https://blog.csdn.net/qq_39135287/article/details/80897631',
+            // url: `${test}`,
+            desc: '',
+            /*分享标题(可选)*/
+            title: '采薇汉服宝贝分享',
+            /*分享摘要(可选)*/
+            summary: '还不赶紧点击进来观看',
+            /*分享图片(可选)*/
+            pics: '',
+            /*视频地址(可选)*/
+            flash: '',
+            /*分享来源(可选) 如：QQ分享*/
+            site: '',
+            style: '201',
+            width: 32,
+            height: 32
+        };
+        var s = [];
+        for(var i in p) {
+            s.push(i + '=' + encodeURIComponent(p[i] || ''));
+        }
+        var url = "http://connect.qq.com/widget/shareqq/index.html?" + s.join('&');
+        window.open(url);
+    }
+
+    //立即购买方法
+    function buyGoods() {
+        let test = window.location.href
+        //商品id
+        let goodsId = test.split('id=')[1]
+        console.log(goodsId)
+        //商品名称
+        let name = $(".goods_name").text()
+        // console.log(name)
+        //商品价钱
+        let price = $(".goods_price_item").text()
+        //商品尺寸
+        let size = $("#goods_size option:selected").text()
+        // console.log(size)
+        //商品数量
+        let number = $(".goods_number").val()
+        // console.log(number)
+        $.ajax({
+            type:"post",
+            url:"/buyGoods.do",
+            data:{
+                goodsId,
+                name,
+                price,
+                size,
+                number
+            },
+            success(data){
+                if (data==1){
+                    $(location).attr('href', `/order_process?goods_id=${goodsId}&goods_size=${size}`)
+                }
+                else if(data=='2'){
+                    alert("请先登录！")
+                }
+                else if(data=='3'){
+                    alert("库存不足，无法购买！")
+                }
+                else {
+                    alter("操作失败！")
+                }
+            }
+        })
+    }
+    //加入购物车方法
+    function addCart(){
+        console.log("123")
+        let test = window.location.href
+        //商品id
+        let goodsId = test.split('id=')[1]
+        // console.log(goodsId)
+        //商品名称
+        let name = $(".goods_name").text()
+        // console.log(name)
+        //商品价钱
+        let price = $(".goods_price_item").text()
+        //商品尺寸
+        let size = $("#goods_size option:selected").text()
+        // console.log(size)
+        //商品数量
+        let number = $(".goods_number").val()
+        // let newtest = window.location.href
+        // console.log(number)
+        $.ajax({
+            type:"post",
+            url:"/addCart.do",
+            data:{
+                goodsId,
+                price,
+                size,
+                number
+            },
+            success(data){
+                console.log(data)
+                if (data=='1'){
+                    alert("成功加入购物车!")
+                }
+                else if(data=='2'){
+                    alert("请先登录！")
+                }
+                else if(data=='3'){
+                    alert("库存不足，添加失败！")
+                }
+                else {
+                    alert("添加失败!")
+                }
+            }
+        })
+    }
+    //加入/取消收藏
+    function collectChange() {
+        let test = window.location.href
+        //商品id
+        let goodsId = test.split('id=')[1]
+        $.ajax({
+            type:"post",
+            url:"/addCollect.do",
+            data:{
+                goodsId
+            },
+            success(data){
+                if (data=='1'){
+                    alert("收藏成功!")
+                }
+                else if(data=='2') {
+                    alert("请先登录！")
+                }
+                else if(data=='3') {
+                    alert("你已经收藏过了！")
+                }else {
+                    alert("收藏失败!")
+                }
+            }
+        })
+        /*if ($(".is_collect").text()=="收藏"){
+            $(".is_collect").text('取消收藏')
+            $.ajax({
+                type:"post",
+                url:"/addCollect.do",
+                data:{
+                    goodsId
+                },
+                success(data){
+                    if (data=='1'){
+                        alert("收藏成功!")
+                    }else {
+                        alert("收藏失败!")
+                    }
+                }
+            })
+        }
+        else if ($(".is_collect").text()=="取消收藏"){
+            $(".is_collect").text('收藏')
+            $.ajax({
+                type:"post",
+                url:"/cancelCollect.do",
+                data:{
+                    goodsId
+                },
+                success(data){
+                    if (data=='1'){
+                        alert("取消收藏成功!")
+                    }else {
+                        alert("取消收藏失败!")
+                    }
+                }
+            })
+        }*/
+    }
+
+    //选择评论类型
+    $('input:radio').click(function () {
+        let comment_type=$("input[type='radio']:checked").val();
+        // console.log(comment_type)
+        let test = window.location.href
+        //商品id
+        let goodsId = test.split('id=')[1]
+        $.ajax({
+            type:"post",
+            url:"/choseComment.do",
+            data:{
+                goodsId,
+                comment_type
+            },
+            success(data){
+                if (data.length){
+                    $(".evaluate_content_part").html('')
+                    data.forEach((item,index)=>{
+                        $(".evaluate_content_part").append(`
+                            <div class="evaluate_box clear">
+                                 <div class="evaluate_box_left">
+                                    <div class="user_pic">
+                                        <img src="${item.user_header_url}" alt="" width="50">
+                                    </div>
+                                    <p class="user_name">${item.user_account}</p>
+                                 </div>
+                                 <div class="evaluate_box_right">
+                                    <p class="user_evaluate">${item.comments_content}</p>
+                                    <div class="commets_pic">
+                                        <img src="${item.comments_img_url}" alt="" width="30">
+                                    </div>
+                                    <p class="time_size"><span>${(new Date(item.comments_time)).getFullYear()+'-'+((new Date(item.comments_time)).getMonth()+1)+'-'+(new Date(item.comments_time)).getDate()}</span> 尺码:<span>${item.good_size}</span> --<span class="comments_type">${item.comments_type}</span></p>
+                                 </div>
+                            </div>
+                        `)
+                    })
+                }else {
+                    $(".evaluate_content_part").html('')
+                }
+            }
+        })
+    });
+</script>
+</body>
+</html>

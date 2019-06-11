@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>汉服女装</title>
+    <link rel="stylesheet" href="../css/girlsPage.css">
+    <link href="../lib/bootstrap-3.3.5-dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../lib/bootstrap-3.3.5-dist/js/jquery-1.11.3.js"></script>
+    <link rel="stylesheet" href="fonts/font_iizwxr4cask/iconfont.css">
+    <script src="../lib/bootstrap-3.3.5-dist/js/bootstrap.min.js"></script>
+    <style>
+        #nav_top>li{
+            margin-left: 32px;
+        }
+    </style>
+</head>
+<body>
+<%- include("common/shouye_header.ejs")%>
+<%- include("common/header.ejs")%>
+<div class="content">
+    <div class="nav_girls">
+        <ul class="clear" id="nav_top">
+            <li onclick="choseGoods('交领襦裙')">
+                <img id="nav_one" src="../images/nav_women/001.png" alt="" width="52">
+            </li>
+            <li onclick="choseGoods('袄裙')">
+                <img id="nav_two" src="../images/nav_women/002.png" alt="" width="52">
+            </li>
+            <li onclick="choseGoods('齐胸襦裙')">
+                <img id="nav_three" src="../images/nav_women/003.png" alt="" width="52">
+            </li>
+            <li onclick="choseGoods('对襟齐腰')">
+                <img id="nav_four" src="../images/nav_women/004.png" alt="" width="52">
+            </li>
+            <li onclick="choseGoods('半臂/比甲')">
+                <img id="nav_five" src="../images/nav_women/005.png" alt="" width="52">
+            </li>
+            <li onclick="choseGoods('褙子/披风')">
+                <img id="nav_six" src="../images/nav_women/006.png" alt="" width="52">
+            </li>
+            <li onclick="choseGoods('抹胸/吊带')">
+                <img id="nav_seven" src="../images/nav_women/007.png" alt="" width="52">
+            </li>
+        </ul>
+    </div>
+    <div class="girls_part clear">
+        <img src="../images/girl_part.png" alt="" width="946">
+    </div>
+    <div class="exact_nav clear">
+        <ul class="small_nav clear">
+            <li class="small_nav_home">首页</li>
+            <li>&gt;</li>
+            <li class="smalll_nav_women">汉服女装</li>
+            <li class="add_nav">&gt;</li>
+            <li class="add_nav_value"></li>
+        </ul>
+        <select name="sort" id="sort_type">
+            <option value="0">按默认排序</option>
+            <option value="1">按销售排序&uarr;</option>
+            <option value="2">按销售排序&darr;</option>
+            <option value="3">按价格排序&uarr;</option>
+            <option value="4">按价格排序&darr;</option>
+        </select>
+    </div>
+    <div class="goods_list">
+        <div class="row_one clear">
+            <%goodsList.forEach((item,index)=>{%>
+            <%if ((index+2)%3==0){ %>
+            <div class="goods1_center">
+                <div class="goods_pic">
+                    <a href="/goods_detail?id=<%=item.goods_id%>">
+                        <img src="<%=item.goods_picture_main_url %>" alt="" width="250" height="328">
+                    </a>
+                </div>
+                <p class="goods_price">￥<span><%=(item.goods_price*item.goods_discount_price).toFixed(2)%></span></p>
+                <p class="goods_name"><%=item.goods_name%></p>
+            </div>
+            <%}else{%>
+            <div class="goods1_one">
+                <div class="goods_pic">
+                    <a href="/goods_detail?id=<%=item.goods_id%>">
+                        <img src="<%=item.goods_picture_main_url %>" alt="" width="250" height="328">
+                    </a>
+                </div>
+                <p class="goods_price">￥<span><%=(item.goods_price*item.goods_discount_price).toFixed(2)%></span></p>
+                <p class="goods_name"><%=item.goods_name%></p>
+            </div>
+            <%}%>
+            <%})%>
+        </div>
+    </div>
+    <div class="btn_list clear">
+        <div class="pre_btn" onclick="prevPage()">&lt;</div>
+        <div class="pages_btn clear">
+            <%for (var i=1;i<=pageNum;i++){%>
+            <div class="page_btn" onclick="changePage(this,<%=i%>)"><%=i%></div>
+            <%}%>
+        </div>
+        <div class="next_btn" onclick="nextPage()">&gt;</div>
+    </div>
+</div>
+<%- include("common/shouye_footer.ejs")%>
+<script src="../lib/jquery-1.11.3.js"></script>
+<script>
+    //当前为女装专区
+    var part_page = "女装"
+    //默认当前页数为1
+    var currentPage = 1
+    //排序方式0为默认，1为按销售排序升序asc，2为按销售排序升序降序desc,3为按价格排序升序asc，4为按价格排序降序desc
+    var sort_type = 0
+    var goods_type = ""
+    function pageBtnShow(num) {
+        currentPage = num;
+        $.ajax({
+            type:"post",
+            url:"/choosePage.do",
+            data:{
+                currentPage,
+                sort_type,
+                goods_type,
+                part_page
+            },
+            success(data){
+                $(".row_one").html('')
+                data.forEach((item,index)=>{
+                    if ((index+2)%3==0) {
+                        $(".row_one").append(`
+                                        <div class="goods1_center">
+                                            <div class="goods_pic">
+                                                <a href="/goods_detail?id=${item.goods_id}">
+                                                    <img src=${item.goods_picture_main_url} alt="" width="250" height="328">
+                                                </a>
+                                             </div>
+                                            <p class="goods_price">￥<span>${(item.goods_price*item.goods_discount_price).toFixed(2)}</span></p>
+                                            <p class="goods_name">${item.goods_name}</p>
+                                         </div>
+                                        `)
+                    }
+                    else {
+                        $(".row_one").append(`
+                                        <div class="goods1_one">
+                                            <div class="goods_pic">
+                                                <a href="/goods_detail?id=${item.goods_id}">
+                                                    <img src=${item.goods_picture_main_url} alt="" width="250" height="328">
+                                                </a>
+                                             </div>
+                                            <p class="goods_price">￥<span>${(item.goods_price*item.goods_discount_price).toFixed(2)}</span></p>
+                                            <p class="goods_name">${item.goods_name}</p>
+                                         </div>
+                                        `)
+                    }
+                })
+            }
+        })
+    }
+    function changePage(one,num) {
+        $(one).addClass("btn_active").siblings().removeClass("btn_active")
+        pageBtnShow(num)
+        // console.log($(one).text())
+    }
+    function prevPage() {
+        currentPage--;
+        if (currentPage<=1){
+            currentPage=1
+        }
+        let some = currentPage
+        $(".page_btn").eq(--some).addClass("btn_active").siblings().removeClass("btn_active")
+        pageBtnShow(currentPage,sort_type)
+    }
+    function nextPage() {
+        currentPage++;
+        if (currentPage>=$(".page_btn").length){
+            currentPage=$(".page_btn").length
+        }
+        console.log(currentPage)
+        let some = currentPage
+        $(".page_btn").eq(--some).addClass("btn_active").siblings().removeClass("btn_active")
+        pageBtnShow(currentPage)
+    }
+    $("#sort_type").change(function () {
+        let theType = $("#sort_type option:selected").val()
+        if (theType==0){
+            sort_type=0
+            currentPage = 1
+            pageBtnShow(currentPage)
+        }
+        else if (theType==1) {
+            sort_type=1
+            currentPage = 1
+            pageBtnShow(currentPage)
+        }
+        else if (theType==2) {
+            sort_type=2
+            currentPage = 1
+            pageBtnShow(currentPage)
+        }
+        else if (theType==3) {
+            sort_type=3
+            currentPage = 1
+            pageBtnShow(currentPage)
+        }
+        else if (theType==4) {
+            sort_type=4
+            currentPage = 1
+            pageBtnShow(currentPage)
+        }
+    })
+    function choseGoods(goods) {
+        $(".add_nav").css("display","block")
+        $(".add_nav_value").css("display","block").text(`${goods}`)
+        goods_type = goods
+        currentPage = 1
+        pageBtnShow(currentPage)
+    }
+</script>
+</body>
+</html>
